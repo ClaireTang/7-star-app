@@ -1,0 +1,1 @@
+<view class="cpr"><view class="color-9">© shop.hnsqixing.com 版权所有</view><view class="color-9 beian"><block wx:if="{{shop_beian}}"><view><navigator href="http://beian.miit.gov.cn/" target="_blank" class="_a">{{"备案号："+shop_beian}}</navigator></view></block></view></view>
