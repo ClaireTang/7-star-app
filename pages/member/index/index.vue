@@ -21,7 +21,7 @@
 					<!-- #endif -->
 					<!-- #ifdef MP-WEIXIN -->
 					<view class="user-head-img">
-						<!-- <open-data type="userAvatarUrl"></open-data> -->
+						<open-data type="userAvatarUrl"></open-data>
 					</view>
 					<view>
 						<button class="login-btn" hover-class="btn-hover" @click="goLogin()">授权登录</button>
