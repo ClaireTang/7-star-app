@@ -87,7 +87,8 @@ const methodsToken = [
     'wechat_applets_message-api-tmpl',
     'wechat_applets_message-api-settip',
     'wechat_applets_message-api-closetip',
-    'wechat_applets_message-api-istip'
+    'wechat_applets_message-api-istip',
+	'user.giveMoney'
 ];
 
 const post = (method, data, callback,complete) => {
@@ -842,3 +843,6 @@ export const share = (data, callback) => post('user.share', data, callback);
 
 //统一分享解码
 export const deshare = (data, callback) => post('user.deshare', data, callback);
+
+//如果是充值订单，充值送钱
+export const giveMoney = (data, callback) => post('user.giveMoney', data, callback);

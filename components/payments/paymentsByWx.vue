@@ -9,7 +9,7 @@
 				</view>
 				<view class='cell-item-bd cell-item-bd-block'>
 					<view class="cell-bd-view">
-						<text class="cell-bd-text">{{ item.name }}</text>
+						<text class="cell-bd-text">{{ item.name }}========</text>
 					</view>
 					<view class="cell-bd-view">
 						<text class="cell-bd-text address">{{ item.memo }}</text>
@@ -142,8 +142,11 @@
 									paySign: res.data.paySign,
 									success: function(e) {
 										if (e.errMsg === 'requestPayment:ok') {
-											_this.$common.successToShow(res.msg, () => {
-												_this.$common.redirectTo('/pages/goods/payment/result?id=' + res.data.payment_id)
+											_this.$common.successToShow('支付成功', () => {
+												_this.giveMoney(data,res.data)
+												// setTimeout(() => {
+												// 	_this.$common.redirectTo('/pages/goods/payment/result?id=' + res.data.payment_id)
+												// }, 1000)
 											})
 										}
 									}
@@ -178,6 +181,24 @@
 			// 支付中显示隐藏
 			popBtn() {
 				this.popShow = false
+			},
+			giveMoney(data1,data2) {
+				if(data1.payment_type == 2){
+					let post_data = {
+						user_id: data1.ids,
+						money: data1.params.money,
+					}
+					this.$api.giveMoney(post_data, res => {
+						this.$common.successToShow('充值送钱成功', () => {
+							setTimeout(() => {
+								this.$common.redirectTo('/pages/goods/payment/result?id=' + data2.payment_id)
+							}, 1000)
+						})
+					},err => {
+						console.log(err,'err')
+						this.$common.successToShow(err)
+					})
+				}
 			}
 		}
 

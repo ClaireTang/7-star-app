@@ -19,6 +19,12 @@
 					</view>
 				</view>
 			</view>
+			<view>
+				<uni-section title="充值说明" type="line"></uni-section>
+				<uni-list>
+					<uni-list-item :show-arrow="false" :title="flat(item)" v-for="(item,key) in user.grade_discounts" :key="key"/>
+				</uni-list>
+			</view>
 		</view>
 		<view class="button-bottom">
 			<button class="btn btn-square btn-b" hover-class="btn-hover2" @click="navigateToHandle">去支付</button>
@@ -27,6 +33,7 @@
 </template>
 
 <script>
+
 export default {
 	data () {
 		return {
@@ -38,6 +45,13 @@ export default {
 	},
 	onLoad () {
 		this.userInfo()
+	},
+	computed: {
+		flat() {
+			return function (item) {
+				return `充值${item.replace(/-/g, '元及以上送')}元`;
+			}
+		}
 	},
 	methods: {
 		// 获取用户信息

@@ -130,15 +130,14 @@
 								money: _this.recharge
 							}
 						}
-
 						_this.$api.pay(data, res => {
 							if (res.status) {
 								uni.requestPayment({
 									provider: "alipay",
 									orderInfo: res.data.data,
-									success: function(data) {
+									success: function(result) {
 										_this.$common.successToShow('支付成功', () => {
-											_this.redirectHandler(res.data.payment_id)
+											_this.giveMoney(data,res.data)
 										})
 									}
 								});
@@ -176,9 +175,9 @@
 										timestamp: res.data.timestamp,
 										sign: res.data.sign,
 									},
-									success: function(data) {
+									success: function(result) {
 										_this.$common.successToShow('支付成功', () => {
-											_this.redirectHandler(res.data.payment_id)
+											_this.giveMoney(data,res.data)
 										})
 									},
 									fail: function(res) {
@@ -218,6 +217,24 @@
 			// 支付中显示隐藏
 			popBtn() {
 				this.popShow = false
+			},
+			giveMoney(data1,data2) {
+				if(data1.payment_type == 2){
+					let post_data = {
+						user_id: data1.ids,
+						money: data1.params.money,
+					}
+					this.$api.giveMoney(post_data, res => {
+						this.$common.successToShow('充值送钱成功', () => {
+							setTimeout(() => {
+								this.$common.redirectTo('/pages/goods/payment/result?id=' + data2.payment_id)
+							}, 1000)
+						})
+					},err => {
+						console.log(err,'err')
+						this.$common.successToShow(err)
+					})
+				}
 			}
 		}
 

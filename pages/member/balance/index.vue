@@ -1,11 +1,18 @@
 <template>
 	<view class="content">
-		<view class='withdrawcash-top'>
-			<text class='withdrawcash-title'>账户余额（元）</text>
-			<text class='withdrawcash-num'>{{ userInfo.balance }}</text>
+		<view class='flex space-between withdrawcash-top'>
+			<view class="">
+				<text class='withdrawcash-title'>账户余额（元）</text>
+				<text class='withdrawcash-num'>{{ userInfo.balance }}</text>
+			</view>
+			<view class="">
+				<text class='withdrawcash-title'>赠送余额（元）</text>
+				<text class='withdrawcash-num'>{{ userInfo.give_money || 0 }}</text>
+			</view>
+			
 		</view>
 		<view class='cell-group margin-cell-group right-img'>
-			<!-- #ifndef MP-WEIXIN -->
+			<!-- vvvv#ifndef MP-WEIXIN -->
 			<view class='cell-item' v-if="platform != 'ios'" @click="navigateToHandle('./recharge')">
 				<view class='cell-item-hd'>
 					<image class='cell-hd-icon' src='/static/image/topup.png'></image>
@@ -15,7 +22,7 @@
 					<image class='cell-ft-next icon' src='/static/image/right.png'></image>
 				</view>
 			</view>
-			<!-- #endif -->
+			<!-- vvvv#endif -->
 			<view class='cell-item' @click="navigateToHandle('./withdraw_cash')">
 				<view class='cell-item-hd'>
 					<image class='cell-hd-icon' src='/static/image/withdraw.png'></image>
@@ -94,6 +101,13 @@ export default {
 </script>
 
 <style>
+.flex {
+	display: flex;
+	align-items: center;
+}
+.space-between {
+	justify-content: space-between;	
+}
 .withdrawcash-top{
   padding: 40upx 26upx;
   background-color: #FF7159;

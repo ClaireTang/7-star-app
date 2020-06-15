@@ -68,21 +68,43 @@ export default {
           paySign: data.paySign // 微信签名
         },
         function(res) {
-          if (res.err_msg === 'get_brand_wcpay_request:ok') {
-            _this.$common.successToShow('支付成功')
-          } else if (res.err_msg === 'get_brand_wcpay_request:cancel') {
-            _this.$common.errorToShow('取消支付')
-          } else {
-            _this.$common.errorToShow('支付失败')
-          }
-          setTimeout(() => {
-            _this.$common.redirectTo(
-              '/pages/goods/payment/result?id=' + data.payment_id
-            )
-          },1000)
+			if (res.err_msg === 'get_brand_wcpay_request:ok') {
+				_this.$common.successToShow('auth:支付成功', () => {
+					_this.giveMoney({payment_type: _this.type,ids: _this.uid,params:{money:_this.money}},data)
+				})
+			} else {
+				if (res.err_msg === 'get_brand_wcpay_request:cancel') {
+					_this.$common.errorToShow('auth:取消支付')
+				} else {
+					_this.$common.errorToShow('支付失败')
+				}
+				setTimeout(() => {
+					_this.$common.redirectTo(
+					  '/pages/goods/payment/result?id=' + data.payment_id
+					)
+				},1000)
+			}
         }
       )
     },
+	giveMoney(data1,data2) {
+		if(data1.payment_type == 2){
+			let post_data = {
+				user_id: data1.ids,
+				money: data1.params.money,
+			}
+			this.$api.giveMoney(post_data, res => {
+				this.$common.successToShow('auth:充值送钱成功', () => {
+					setTimeout(() => {
+						this.$common.redirectTo('/pages/goods/payment/result?id=' + data2.payment_id)
+					}, 1000)
+				})
+			},err => {
+				console.log(err,'err')
+				this.$common.successToShow(err)
+			})
+		}
+	},
     toPayHandler(code) {
       let data = {
         payment_code: code,

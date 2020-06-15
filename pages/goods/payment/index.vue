@@ -90,8 +90,8 @@ export default {
 	data() {
 		return {
 			orderId: 0,
-			recharge: 0,
-			type: 1, // 订单类型 1商品订单 2充值订单
+			recharge: 0, //充值金额
+			type: 1, // 订单类型 1商品订单 2充值订单 5快捷下单 6付款码
 			orderInfo: {}, // 订单详情
 			userInfo: {}, // 用户信息
 			form_id: 0
