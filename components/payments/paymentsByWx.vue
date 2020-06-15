@@ -198,6 +198,10 @@
 						console.log(err,'err')
 						this.$common.successToShow(err)
 					})
+				}else{
+					setTimeout(() => {
+						this.$common.redirectTo('/pages/goods/payment/result?id=' + data2.payment_id)
+					}, 1000)
 				}
 			}
 		}
