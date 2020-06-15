@@ -214,8 +214,10 @@
 						<view class="goods-number">
 							<text class="pop-m-title">数量</text>
 							<view class="pop-m-bd-in">
-								<uni-number-box :min="minNums" :max="product.stock" :value="buyNum" @change="bindChange"></uni-number-box>
+								<!-- <uni-number-box :min="minNums" :max="product.stock" :value="buyNum" @change="bindChange"></uni-number-box> -->
+								<uni-number-box :min="minNums" :max="maxNums" :value="buyNum" @change="bindChange"></uni-number-box>
 							</view>
+							<text v-if="product.purchase">【限购：{{product.purchase}}】</text>
 						</view>
 					</scroll-view>
 					<view class="pop-b">
@@ -442,6 +444,13 @@
 			this.submitStatus = false;
 		},
 		computed: {
+			maxNums() {
+				if(this.product.purchase){
+					return Math.min(this.product.stock,this.product.purchase)
+				}else{
+					return this.product.stock
+				}
+			},
 			// 规格切换计算规格商品的 可购买数量
 			minNums() {
 				return this.product.stock > this.minBuyNum ? this.minBuyNum : this.product.stock;

@@ -1,1 +1,0 @@
-<view class="video bottom-cell-group"><video src="{{jdata.params.list[0].url}}" poster="{{jdata.params.list[0].image}}" controls="{{true}}"></video></view>

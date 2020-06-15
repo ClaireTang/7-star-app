@@ -1,1 +1,0 @@
-<view class="content"><u-parse style="background-color:#fff;" vue-id="ae22bfd8-1" content="{{content}}" data-event-opts="{{[['^preview',[['preview']]],['^navigate',[['navigate']]]]}}" bind:preview="__e" bind:navigate="__e" bind:__l="__l"></u-parse></view>

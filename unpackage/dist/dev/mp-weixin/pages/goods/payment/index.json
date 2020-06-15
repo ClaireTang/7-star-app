@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "支付",
-  "usingComponents": {
-    "payments-by-wx": "/components/payments/paymentsByWx"
-  }
-}

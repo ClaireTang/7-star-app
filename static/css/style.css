@@ -486,7 +486,7 @@ uni-toast .uni-toast {
 	float: right;
 	color: #999;
 	font-size: 24upx;
-	height: 30upx;
+	/* height: 30upx; */
 	min-width: 50upx;
 }
 

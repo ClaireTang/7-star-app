@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "页面",
-  "enablePullDownRefresh": true,
-  "usingComponents": {
-    "jshop": "/components/jshop/jshop",
-    "jihai-copyright": "/components/jihai-copyright/jihaiCopyright"
-  }
-}
