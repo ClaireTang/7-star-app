@@ -157,6 +157,10 @@
 						<view class="cell-ft-view">{{ cartData.cost_freight || ''}}</view>
 					</view>
 				</view>
+				<view class='cell-item red-price fz12'>
+					如果订单总价不够免配起点（35元），则不配送，请勿下单！
+				</view>
+				
 			</view>
 
 			<view class='cell-group leave-message'>
