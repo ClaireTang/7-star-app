@@ -45,7 +45,7 @@
 											<uni-number-box
 												v-on:change="bindChange($event, item)"
 												:min="1"
-												:max="item.maxStock"
+												:max="maxNums(item)"
 												:value="item.nums"
 												v-if="!editStatus"
 											></uni-number-box>
@@ -55,6 +55,7 @@
 										</view>
 									</view>
 								</view>
+								<text v-if="item.products.purchase">【限购：{{item.products.purchase}}】</text>
 							</view>
 						</view>
 					</view>
@@ -125,7 +126,16 @@ export default {
 		},
 		goods_stocks_warn() {
 			return this.$store.state.config.goods_stocks_warn;
-		}
+		},
+		maxNums(item) {
+			return function(item) {
+				if(item.products.purchase){
+					return Math.min(item.products.stock,item.products.purchase)
+				}else{
+					return item.products.stock
+				}
+			}
+		},
 	},
 	methods: {
 		checkboxChange: function(e) {
