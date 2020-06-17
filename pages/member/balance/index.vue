@@ -12,7 +12,7 @@
 			
 		</view>
 		<view class='cell-group margin-cell-group right-img'>
-			<!-- vvvv#ifndef MP-WEIXIN -->
+			<!-- #ifndef MP-WEIXIN -->
 			<view class='cell-item' v-if="platform != 'ios'" @click="navigateToHandle('./recharge')">
 				<view class='cell-item-hd'>
 					<image class='cell-hd-icon' src='/static/image/topup.png'></image>
@@ -22,7 +22,7 @@
 					<image class='cell-ft-next icon' src='/static/image/right.png'></image>
 				</view>
 			</view>
-			<!-- vvvv#endif -->
+			<!-- #endif -->
 			<view class='cell-item' @click="navigateToHandle('./withdraw_cash')">
 				<view class='cell-item-hd'>
 					<image class='cell-hd-icon' src='/static/image/withdraw.png'></image>
