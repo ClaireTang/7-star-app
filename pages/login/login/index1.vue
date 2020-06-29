@@ -138,7 +138,9 @@ export default {
 		},
 		// 获取验证码图片地址
 		getCaptchaUrl() {
-			this.captchaUrl = this.$config.apiBaseUrl + 'captcha.html';
+			// this.captchaUrl = this.$config.apiBaseUrl + 'captcha.html';
+			//修改由于网址不变造成页面图片不刷新的问题
+			this.captchaUrl =`${this.$config.apiBaseUrl}captcha?=${new Date().getTime()}.html`;
 		},
 		// 去注册
 		toReg() {
