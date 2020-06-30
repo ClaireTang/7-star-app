@@ -895,3 +895,29 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 	font-size: 24rpx;
 	margin: 0 10rpx;
 }
+
+.flex {
+	display: flex;
+	align-items: center;
+}
+.flex-fill {
+	flex: 1 1 auto;
+}
+.space-around {
+	justify-content: space-around;	
+}
+.space-between {
+	justify-content: space-between;	
+}
+.w-100 {
+	width: 100%;
+}
+.level-wrap {
+	padding: 8px 11px 8px 0;
+	margin-left: 11px;
+	border-bottom: 2rpx solid #f3f3f3;
+}
+.level-wrap .flex {
+	padding: 10rpx;
+	/* text-align: center; */
+}

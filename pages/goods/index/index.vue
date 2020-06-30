@@ -25,13 +25,14 @@
 				<view class='cell-item goods-top'>
 					<view class='cell-item-hd'>
 						<view class='cell-hd-title goods-price red-price'>￥{{ product.price || '0.00' }}</view>
-						<view class='cell-hd-title goods-price cost-price' v-if="parseFloat(product.mktprice)>0">￥{{ product.mktprice  || '0.00'}}</view>
+						<view class='cell-hd-title goods-price color-9 fsz28'>原价:￥{{ product.sale_price || '0.00'}}</view>
+						<!-- <view class='cell-hd-title goods-price mktprice-price' v-if="parseFloat(product.mktprice)>0">市场价:￥{{ product.mktprice  || '0.00'}}</view> -->
 					</view>
 					<view class='cell-item-ft'>
 						<text>{{ goodsInfo.buy_count || '0' }} 人已购买</text>
 					</view>
 				</view>
-
+				
 				<view class='cell-item goods-details'>
 					<view class='cell-item-hd'>
 						<view class='cell-hd-title'>
@@ -47,7 +48,20 @@
 						<image class='cell-ft-next icon' @click="goShare()" src='/static/image/share.png'></image>
 					</view>
 				</view>
-
+				
+				<view class="level-wrap fsz26">
+					<view class="color-3 cell-hd-title-view">
+						各会员等级优惠说明
+					</view>
+					<view class="flex space-between">
+						<view class="flex-fill" v-for="(item,key) in gradeList" :key="key">
+							<view>{{item.vip_name}}</view>
+							<view class="color-9">↓   {{item.grade_price}}</view>
+							<!-- <view class="color-9">￥{{item.grade_price_ed}}</view> -->
+						</view>
+					</view>
+				</view>
+				
 				<!-- 促销 -->
 				<view class='cell-item goods-title-item cell-item-mid' v-if="promotion.length">
 					<view class='cell-item-hd'>
@@ -203,7 +217,10 @@
 						</view>
 						<view class='goods-information'>
 							<view class='pop-goods-name'>{{ product.name || ''}}</view>
-							<view class='pop-goods-price red-price'>￥ {{ product.price || ''}}</view>
+							<view class="flex">
+								<view class='pop-goods-price red-price'>￥ {{ product.price || ''}}</view>
+								<view class='pop-goods-price color-9 fsz24'>原价:￥{{ product.sale_price || ''}}</view>
+							</view>
 						</view>
 						<view class='close-btn' @click="toclose()">
 							<image src='/static/image/close.png'></image>
@@ -351,6 +368,7 @@
 				current: 0, // init tab位
 				goodsId: 0, // 商品id
 				goodsInfo: {}, // 商品详情
+				gradeList: [], //会员等级价格展示
 				cartNums: 0, // 购物车数量
 				product: {}, // 规格详情
 				goodsParams: [], // 商品参数信息
@@ -536,6 +554,7 @@
 						//var htmlString = info.intro; //replace(/\\/g, "").replace(/<img/g, "<img style=\"display:none;\"")
 						//info.intro = htmlParser(htmlString);
 						this.goodsInfo = info;
+						this.gradeList = res.grade;
 						this.isfav = this.goodsInfo.isfav === 'true' ? true : false;
 						this.product = this.spesClassHandle(products);
 
@@ -870,9 +889,8 @@
 		font-size: 38upx;
 	}
 
-	.cost-price {
+	.mktprice-price {
 		font-size: 28upx !important;
-		bottom: -10upx;
 		color: #999;
 		text-decoration: line-through;
 	}
@@ -883,7 +901,7 @@
 	}
 
 	.goods-details {
-		padding-top: 0;
+		/* padding-top: 0; */
 	}
 
 	.goods-details .cell-hd-title {
@@ -1252,12 +1270,6 @@
 		line-height: 1.5;
 	}
 
-	.cost-price {
-		font-size: 26upx;
-		text-decoration: line-through;
-		display: block;
-	}
-
 	.commodity-salesvolume {
 		width: 240upx;
 		display: inline-block;
@@ -1400,4 +1412,7 @@
 	}
 
 	/* #endif */
+	.red-price {
+		margin-right: 10rpx;
+	}
 </style>
