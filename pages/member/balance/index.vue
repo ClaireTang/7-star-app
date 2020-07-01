@@ -94,7 +94,9 @@ export default {
 		},
 		// 页面跳转
 		navigateToHandle (pageUrl) {
+			// #ifndef MP-WEIXIN
 			this.$common.navigateTo(pageUrl)
+			// #endif
 		}
 	}
 }	

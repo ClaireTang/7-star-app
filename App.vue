@@ -1,6 +1,30 @@
 <script>
 	export default {
 		onLaunch() {
+			//#ifdef APP-PLUS  
+			var server = "https://shop.hnsqixing.com/merapi/upgrade/version"; //检查更新地址  
+			var req = { //升级检测数据  
+				"appid": plus.runtime.appid,  
+				"version": plus.runtime.version  
+			};  
+			uni.request({  
+				url: server,  
+				data: req,  
+				success: (res) => {  
+					if (res.statusCode == 200 && res.data.status === 1) {  
+						uni.showModal({ //提醒用户更新  
+							title: "更新提示",  
+							content: res.data.note,  
+							success: (res) => {  
+								if (res.confirm) {  
+									plus.runtime.openURL(res.data.url);  
+								}  
+							}  
+						})  
+					}  
+				}  
+			})  
+			//#endif  
 			// 获取店铺配置信息  全局只请求一次
 			this.$api.shopConfig(res => {
 				this.$store.commit('config', res)
