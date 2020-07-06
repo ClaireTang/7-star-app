@@ -312,7 +312,7 @@
 		// padding: 0 60rpx;
 	
 		.content {
-			padding: 20rpx 60rpx 80rpx;
+			padding: 20rpx 60rpx 100rpx;
 			min-height: 100%;
 			box-sizing: border-box;
 			background-color: #fff;
