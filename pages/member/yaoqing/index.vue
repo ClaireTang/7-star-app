@@ -41,11 +41,11 @@
 		<jc-popUp position="bottom" ref="pop1" markTapHide="true" closeIcon="false">
 			<view class="tishi-box">
 				<view class="tishi-box-a" @click="weixin">
-					<image src="/static/images/haoyou.png" mode="scaleToFill"></image>
+					<image src="/static/image/haoyou.png" mode="scaleToFill"></image>
 					<view>微信好友</view>
 				</view>
 				<view class="tishi-box-a" @click="bengyouquan">
-					<image src="/static/images/pengyouquan.png" mode="scaleToFill"></image>
+					<image src="/static/images/circle-of-friends.png" mode="scaleToFill"></image>
 					<view>朋友圈</view>
 				</view>
 			</view>

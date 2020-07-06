@@ -22,6 +22,7 @@
             deshare(data) {
                 this.$api.deshare({code: data}, res => {
                     if (res.status) {
+						console.log(res.data.page)
                         this.saveInviteCode(res.data.userShareCode); //存储邀请码
                         switch(res.data.page) {
                             case '1': //首页
