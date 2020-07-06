@@ -116,11 +116,11 @@ export default {
           edata: e.detail.encryptedData,
           signature: e.detail.signature
         }
-        //有推荐码的话，带上
-        var invitecode = _this.$db.get('invitecode')
-        if (invitecode) {
-          data.invitecode = invitecode
-        }
+        // //有推荐码的话，带上
+        // var invitecode = _this.$db.get('invitecode')
+        // if (invitecode) {
+        //   data.invitecode = invitecode
+        // }
         _this.toLogin(data)
       }
     },

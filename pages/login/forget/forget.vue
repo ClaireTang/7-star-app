@@ -53,9 +53,9 @@ export default {
 			_this.verification = false;
 		}
 
-		if (options.invitecode) {
-			this.$db.set('invitecode', options.invitecode);
-		}
+		// if (options.invitecode) {
+		// 	this.$db.set('invitecode', options.invitecode);
+		// }
 	},
 	computed: {
 		// 验证手机号

@@ -54,6 +54,10 @@
 <script>
 import { baseUrl } from '@/config/config.js';
 import { goBack, jumpBackPage } from '@/config/mixins.js';
+// #ifdef APP-PLUS || APP-PLUS-NVUE
+	//引入插件  用于app免邀请码安装
+	const sharetrace = uni.requireNativePlugin('shoot-sharetrace');
+// #endif
 export default {
 	mixins: [goBack, jumpBackPage],
 	data() {
@@ -70,9 +74,9 @@ export default {
 		};
 	},
 	onLoad(options) {
-		if (options.invitecode) {
-			this.$db.set('invitecode', options.invitecode);
-		}
+		// if (options.invitecode) {
+		// 	this.$db.set('invitecode', options.invitecode);
+		// }
 		// 判断浏览器环境
 		this.weixinBrowser = this.$common.isWeiXinBrowser();
 
@@ -89,6 +93,18 @@ export default {
 				url: '/pages/index/index'
 			});
 		}
+	},
+	onReady() {
+		// #ifdef APP-PLUS || APP-PLUS-NVUE
+		//获取安装携带参数
+		sharetrace.getInstallTrace( data => {
+			// this.showResult(JSON.stringify(data));
+			if(data.code === 200) {
+				// this.yaoqingcode = data.data.paramsData.split('=').slice(1)
+				this.$db.set('yaoqingcode', data.data.paramsData.split('=').slice(1))
+			}
+		});
+		// #endif
 	},
 	computed: {
 		// 动态更改登录按钮bg
@@ -109,6 +125,16 @@ export default {
 		}
 	},
 	methods: {
+		showResult(data) {
+			uni.showModal({
+				title: 'ShareTrace',
+				content: data,
+				showCancel:false,
+				success: function (res) {
+		
+				}
+			});
+		},
 		// 验证手机号
 		rightMobile() {
 			let res = {};
@@ -157,11 +183,11 @@ export default {
 				data.captcha = this.captcha;
 			}
 
-			// 获取邀请码
-			let invicode = this.$db.get('invitecode');
-			if (invicode) {
-				data.invitecode = invicode;
-			}
+			// // 获取邀请码
+			// let invicode = this.$db.get('invitecode');
+			// if (invicode) {
+			// 	data.invitecode = invicode;
+			// }
 
 			this.$api.login(data, res => {
 				if (res.status) {
@@ -184,7 +210,7 @@ export default {
 		},
 		// 重定向跳转 或者返回上一个页面
 		redirectHandler() {
-			this.$db.del('invitecode');
+			// this.$db.del('invitecode');
 			this.handleBack();
 		},
 		// 登录方式切换
@@ -240,10 +266,10 @@ export default {
 									user: infoRes.userInfo,
 									type: type
 								};
-								var invitecode = _this.$db.get('invitecode');
-								if (invitecode) {
-									data.invitecode = invitecode;
-								}
+								// var invitecode = _this.$db.get('invitecode');
+								// if (invitecode) {
+								// 	data.invitecode = invitecode;
+								// }
 								_this.$api.appTrustLogin(data, res => {
 									uni.hideLoading();
 									if (res.status) {

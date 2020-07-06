@@ -155,6 +155,12 @@
         "navigationBarTitleText": "邀请好友"
       }
     },
+	{
+	  "path": "pages/member/yaoqing/index",
+	  "style": {
+	    "navigationBarTitleText": "我的邀请"
+	  }
+	},
     {
       "path": "pages/member/invite/list",
       "style": {
@@ -458,26 +464,26 @@
 	  {
 		"pagePath": "pages/index/index",
 		"text": "首页",
-		"iconPath": "static/image/index_gray.png",
-		"selectedIconPath": "static/image/index_black.png"
+		"iconPath": "static/image/tabbar-index-grey.png",
+		"selectedIconPath": "static/image/tabbar-index-black.png"
 	  },
 	  {
 		"pagePath": "pages/classify/classify",
 		"text": "分类",
-		"iconPath": "static/image/classify_gray.png",
-		"selectedIconPath": "static/image/classify_black.png"
+		"iconPath": "static/image/tabbar-classify-grey.png",
+		"selectedIconPath": "static/image/tabbar-classify-black.png"
 	  },
 	  {
 		"pagePath": "pages/cart/index/index",
 		"text": "购物车",
-		"iconPath": "static/image/cart_gray.png",
-		"selectedIconPath": "static/image/cart_black.png"
+		"iconPath": "static/image/tabbar-cart-grey.png",
+		"selectedIconPath": "static/image/tabbar-cart-black.png"
 	  },
 	  {
 		"pagePath": "pages/member/index/index",
 		"text": "我的",
-		"iconPath": "static/image/user_gray.png",
-		"selectedIconPath": "static/image/user_black.png"
+		"iconPath": "static/image/tabbar-user-grey.png",
+		"selectedIconPath": "static/image/tabbar-user-black.png"
 	  }
     ]
   },

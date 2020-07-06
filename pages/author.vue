@@ -56,7 +56,7 @@ export default {
 				scope: 1,
 				code: this.code,
 				state: this.state,
-				invitecode: this.$db.get('invitecode') || ''
+				// invitecode: this.$db.get('invitecode') || ''
 			};
 			this.$api.getOpenId(data, res => {
 				if (res.status) {
@@ -74,7 +74,7 @@ export default {
 			});
 		},
 		redirectHandler() {
-			this.$db.del('invitecode');
+			// this.$db.del('invitecode');
 			let redirectPage = this.$db.get('redirectPage');
 			if (redirectPage) {
 				this.$db.del('redirectPage');

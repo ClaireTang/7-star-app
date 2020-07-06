@@ -8,7 +8,7 @@
 			<view class="login-item flc">
 				<input class="login-item-input" placeholder-class="login-item-i-p fsz26" type="text" v-model="code" placeholder="请输入验证码" />
 				<view :class="sendCodeBtn" @click="sendCode" v-if="verification">发送验证码</view>
-				<view class="btn btn-g" v-if="!verification">{{ timer }} 秒后重新获取</view>
+				<view class="btn btn-g" v-if="!verification">{{ login_timer }} 秒后重新获取</view>
 			</view>
 		</view>
 		<view class="login-b">
@@ -55,7 +55,7 @@ export default {
 			code: '', // 短信验证码
 			user_wx_id: '', //授权id
 			verification: true, // 通过v-show控制显示获取还是倒计时
-			timer: 60, // 定义初始时间为60s
+			login_timer: 60, // 定义初始时间为60s
 			btnb: 'btn btn-square btn-c btn-all', //按钮背景
 			type: '', // 有值是第三方登录账号绑定
 			isWeixinBrowser: this.$common.isWeiXinBrowser()
@@ -110,8 +110,8 @@ export default {
 			});
 			return true;
 		}
-		_this.timer = parseInt(_this.$db.get('timer'));
-		if (_this.timer != null && _this.timer > 0) {
+		_this.login_timer = parseInt(_this.$db.get('login_timer'));
+		if (_this.login_timer != null && _this.login_timer > 0) {
 			_this.countDown();
 			_this.verification = false;
 		}
@@ -127,7 +127,7 @@ export default {
 					this.$common.loadToHide();
 					this.$api.sms({ mobile: this.mobile, code: 'login' }, res => {
 						if (res.status) {
-							this.timer = 60;
+							this.login_timer = 60;
 							this.verification = false;
 							this.$common.successToShow(res.msg);
 							this.countDown(); // 执行验证码计时
@@ -147,17 +147,28 @@ export default {
 		countDown() {
 			let auth_timer = setInterval(() => {
 				// 定时器设置每秒递减
-				this.timer--; // 递减时间
+				this.login_timer--; // 递减时间
 				uni.setStorage({
-					key: 'timer',
-					data: this.timer,
+					key: 'login_timer',
+					data: this.login_timer,
 					success: function() {}
 				});
-				if (this.timer <= 0) {
+				if (this.login_timer <= 0) {
 					this.verification = true; // 60s时间结束还原v-show状态并清除定时器
 					clearInterval(auth_timer);
 				}
 			}, 1000);
+		},
+		getUserInfo() {
+			return new Promise((resolve,reject) => {
+				this.$api.userInfo({}, res => {
+					if (res.status) {
+						resolve(res.data);
+					}else{
+						reject(res.data)
+					}
+				});
+			})
 		},
 		// 登录
 		login() {
@@ -174,11 +185,13 @@ export default {
 						code: _this.code
 					};
 
-					let invicode = _this.$db.get('invitecode');
-					if (invicode) {
-						data.invitecode = invicode;
+					// let invicode = _this.$db.get('invitecode');
+					// if (invicode) {
+					// 	data.invitecode = invicode;
+					// }
+					if (_this.$db.get('yaoqingcode')) {
+						data.yaoqingcode = _this.$db.get('yaoqingcode');
 					}
-
 					_this.$api.smsLogin(data, res => {
 						if (res.status) {
 							this.$db.set('userToken', res.data);
@@ -191,12 +204,21 @@ export default {
 			}
 		},
 		// 重定向跳转 或者返回上一个页面
-		redirectHandler() {
-			this.$common.successToShow('登录成功!', () => {
-				this.$db.set('timer', 0);
-				this.$db.del('invitecode');
-				this.handleBack();
-			});
+		async redirectHandler() {
+			// this.$db.del('invitecode');
+			this.$db.del('yaoqingcode');
+			let userInfo = await this.getUserInfo()
+			if(userInfo.type === 3){
+				uni.navigateTo({
+					url: '/pages/member/setting/user_info/index'
+				})
+			}else {
+				this.$common.successToShow('登录成功!', () => {
+					this.$db.set('login_timer', 0);
+					this.handleBack();
+				});
+			}
+			
 		},
 		// 跳转到普通登录
 		toLogin() {
@@ -237,10 +259,13 @@ export default {
 				platform: platform, //平台id，标识是小程序登陆的
 				user_wx_id: _this.user_wx_id //微信小程序接口存不了session，所以要绑定的id只能传到前台
 			};
-			//有推荐码的话，带上
-			var invitecode = _this.$db.get('invitecode');
-			if (invitecode) {
-				data.invitecode = invitecode;
+			// //有推荐码的话，带上
+			// var invitecode = _this.$db.get('invitecode');
+			// if (invitecode) {
+			// 	data.invitecode = invitecode;
+			// }
+			if (_this.$db.get('yaoqingcode')) {
+				data.yaoqingcode = _this.$db.get('yaoqingcode');
 			}
 			_this.$api.smsLogin(data, function(res) {
 				if (res.status) {
@@ -269,12 +294,14 @@ export default {
 				user_wx_id: this.user_wx_id
 			};
 
-			// 获取邀请码
-			let invicode = this.$db.get('invitecode');
-			if (invicode) {
-				data.invitecode = invicode;
+			// // 获取邀请码
+			// let invicode = this.$db.get('invitecode');
+			// if (invicode) {
+			// 	data.invitecode = invicode;
+			// }
+			if (this.$db.get('yaoqingcode')) {
+				data.yaoqingcode = this.$db.get('yaoqingcode');
 			}
-
 			this.$api.smsLogin(data, res => {
 				if (res.status) {
 					this.$db.set('userToken', res.data);

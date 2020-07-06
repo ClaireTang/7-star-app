@@ -60,7 +60,7 @@ export default {
 			kefupara: '', //客服传递资料
 			copy: false,
 			suTipStatus: false,
-            shareUrl: '/pages/share/jump'
+            shareUrl: '/pages/share/jump',
 		};
 	},
 	updated() {

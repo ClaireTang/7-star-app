@@ -216,7 +216,7 @@
                     	</view>
                     </view>
                     <!-- #endif -->
-					<view class="item tc" v-for="(item,i) in order" :key="i" v-if="!item.unshowItem">
+					<view class="item tc" v-for="(item,i) in order" :key="i" v-if="!item.unshowItem && !item.hide" >
 						<view class="" @click="navigateToHandle(item.router)">
 							<view class="">
 								<image class='cell-hd-icon' :src='item.icon'></image>
@@ -226,6 +226,18 @@
 							</view>
 						</view>
 					</view>
+					<!-- #ifdef APP-PLUS || APP-PLUS-NVUE -->
+					<view class="item tc">
+						<view @click="yaoqing">
+							<view class="">
+								<image src='/static/image/ic-me-invite.png' class='cell-hd-icon'></image>
+							</view>
+							<view class="text">
+								<text class="">邀请好友</text>
+							</view>
+						</view>
+					</view>	
+					<!-- #endif -->
 					<!-- #ifdef H5 || APP-PLUS || APP-PLUS-NVUE -->
 					<view class="item tc">
 						<view @click="showChat">
@@ -368,14 +380,15 @@
 						name: '邀请好友',
 						icon: '/static/image/ic-me-invite.png',
 						router: '../invite/index',
-						unshowItem: true
+						unshowItem: true,
+						hide: true 				//为了区别系统原有的邀请和自己新增的邀请，让原有的不显示
 					},
 					setting: {
 						name: '系统设置',
 						icon: '/static/image/me-ic-set.png',
 						router: '../setting/index',
 						unshowItem: false
-					}
+					},
 				},
 				list: 2,
                 suTipStatus: false
@@ -402,11 +415,11 @@
 						edata: e.detail.encryptedData,
 						signature: e.detail.signature
 					}
-					//有推荐码的话，带上
-					var invitecode = _this.$db.get('invitecode')
-					if (invitecode) {
-						data.invitecode = invitecode
-					}
+					// //有推荐码的话，带上
+					// var invitecode = _this.$db.get('invitecode')
+					// if (invitecode) {
+					// 	data.invitecode = invitecode
+					// }
 					_this.toWxLogin(data)
 				}
 			},
@@ -661,6 +674,14 @@
                     this.suTipStatus = true;
                 }
             },
+			//使用免邀请码安装，邀请好友
+			yaoqing() {
+				// console.log(this.userInfo.id)
+				if (!this.hasLogin) {
+					return this.checkIsLogin()
+				}
+				this.$common.navigateTo(`../yaoqing/index?uid=${this.userInfo.id}`);
+			}
 		},
 		computed: {
 			// 获取店铺联系人手机号

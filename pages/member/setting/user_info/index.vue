@@ -12,12 +12,21 @@
 				</view>
 				<view class='cell-item cell-item-mid'>
 					<view class='cell-item-hd'>
+						<view class='cell-hd-title'>手机号</view>
+					</view>
+					<view class='cell-item-bd'>
+						<input class='cell-bd-input' placeholder='' disabled="" v-model="mobile" ></input>
+					</view>
+				</view>
+				<view class='cell-item cell-item-mid'>
+					<view class='cell-item-hd'>
 						<view class='cell-hd-title'>昵称</view>
 					</view>
 					<view class='cell-item-bd'>
 						<input class='cell-bd-input' placeholder='' v-model="nickname" ></input>
 					</view>
 				</view>
+				
 				<!-- #ifndef MP-TOUTIAO || MP-ALIPAY -->
 					<view class='cell-item cell-item-mid right-img'>
 						<view class='cell-item-hd'>
@@ -54,6 +63,38 @@
 						<image class='cell-ft-next icon' src='/static/image/ic-pull-down.png'></image>
 					</view>
 				</view>
+				<view class='cell-item cell-item-mid right-img'>
+					<view class='cell-item-hd'>
+						<view class='cell-hd-title'>类别</view>
+					</view>
+					<view class='cell-item-bd'>
+						<view class="uni-list">
+							<view class="uni-list-cell-db">
+								<picker mode="selector" @change="bindTypePickerChange" :value="indexType" :range="objectType">
+									<view class="uni-input">{{objectType[type]}}</view>
+								</picker>
+							</view>
+						</view>
+					</view>
+					<view class='cell-item-ft'>
+						<image class='cell-ft-next icon' src='/static/image/ic-pull-down.png'></image>
+					</view>
+				</view>
+				<view class='cell-item right-img' v-if="type === 1">
+					<view class='cell-item-hd'>
+						<view class='cell-hd-title'>营业执照</view>
+					</view>
+					<view class='cell-item-bd evaluate-c-b'>
+						<view class="goods-img-item" v-for="(item, key) in images" :key="key">
+							<image class="del" src="/static/image/del.png" mode="" @click="delImage(item)"></image>
+							<image class="" :src="item.url" mode="" @click="clickImg(item.url)"></image>
+						</view>
+						<view class="upload-img" v-show="isImage" @click="upImage">
+							<image class="icon" src="/static/image/camera.png" mode=""></image>
+							<view class="">上传照片</view>
+						</view>
+					</view>
+				</view>
 			</view>
 		</view>
 		<view class="button-bottom">
@@ -69,13 +110,18 @@ export default {
 			title: 'picker',
 			avatar: '',
 			objectSex: ['男', '女', '未知'],
+			objectType: ['个人','商户','未知'],
 			index: 2,
+			indexType: 2,
 			nickname: '',
 			mobile: '',
 			date: '1990-01-01',
 			birthday: '请选择',
 			sex: 0,
-			submitStatus: false
+			type: 0,
+			submitStatus: false,
+			images:[],
+			image_max: 1,
         }
     },
     computed: {
@@ -84,15 +130,29 @@ export default {
         },
         endDate() {
             return this.getDate('end');
-        }
+        },
+		isImage() {
+			let num = this.image_max - this.images.length;
+			if(num > 0) {
+				return true;
+			}else{
+				return false;
+			}
+		}
     },
     methods: {
 		//性别
-		bindPickerChange: function(e) {
+		bindPickerChange(e) {
 			this.sex = e.target.value;
+			console.log(this.sex,'sex')
+		},
+		//类型
+		bindTypePickerChange(e) {
+			this.type = e.target.value;
+			console.log(this.type,'type')
 		},
 		//生日
-		bindDateChange: function(e) {
+		bindDateChange(e) {
 			this.birthday = e.target.value;
 		},
         getDate(type) {
@@ -132,31 +192,79 @@ export default {
 				}
 			})
 		},
+		//上传图片
+		upImage() {
+			let num = this.image_max - this.images.length;
+			if(num > 0){
+				this.$api.uploadImage(num, res => {
+					if(res.status){
+						this.images.push(res.data);
+						this.$common.successToShow(res.msg);
+					}else{
+						this.$common.errorToShow(res.msg);
+					}
+				});
+			}
+		},
+		//删除图片
+		delImage(e) {
+			let newImages = [];
+			for(var i = 0; i < this.images.length; i++) {
+				if(this.images[i].image_id != e.image_id){
+					newImages.push(this.images[i]);
+				}
+			}
+			this.images = newImages;
+		},
+		// 图片点击放大
+		clickImg (img) {
+			// 预览图片
+			uni.previewImage({
+				urls: img.split()
+			});
+		},
 		// 保存资料
 		submitHandler() {
 			this.submitStatus = true;
 			let sex = this.sex +1;
+			let type = this.type +1;
+			
 			if(this.birthday == '请选择'){
-				this.$common.successToShow('请选择出生日期');
+				this.$common.errorToShow('请选择出生日期');
 				this.submitStatus = false;
 				return false;
-			}else{
-				this.$api.editInfo({
-						sex: sex,
-						birthday: this.birthday,
-						nickname: this.nickname
-					}, res => {
-						this.$common.successToShow(res.msg, result => {
-							// this.submitStatus = false;
-							uni.navigateBack({
-								delta: 1
-							});
-						});
-					},res => {
-						this.submitStatus = false;
-					}
-				);
 			}
+			if(this.type === 1 && this.images.length === 0) {
+				this.$common.errorToShow('请上传营业执照');
+				this.submitStatus = false;
+				return false;
+			}
+			if(this.type === 2) {
+				this.$common.errorToShow('请选择类别');
+				this.submitStatus = false;
+				return false;
+			}
+			this.$api.editInfo({
+					sex: sex,
+					type: type,
+					birthday: this.birthday,
+					nickname: this.nickname,
+					business_license: this.type === 1 ? this.images[0].image_id : ''
+				}, res => {
+					this.$common.successToShow(res.msg, result => {
+						// this.submitStatus = false;
+						// uni.navigateBack({
+						// 	delta: 1
+						// });
+						uni.switchTab({
+							url: '/pages/member/index/index'
+						})
+					});
+				},res => {
+					this.submitStatus = false;
+				}
+			);
+			
 		}
     },
 	onLoad: function() {
@@ -164,6 +272,7 @@ export default {
 		_this.$api.userInfo({}, function(res) {
 			if (res.status) {
 				var the_sex = res.data.sex - 1;
+				var the_type = res.data.type - 1;
 				if (res.data.birthday == null) {
 					res.data.birthday = '请选择';
 				}
@@ -171,10 +280,16 @@ export default {
 				_this.mobile = res.data.mobile;
 				_this.sex = the_sex;
 				_this.index = the_sex;
+				_this.type = the_type;
+				_this.indexType = the_type;
 				_this.birthday = res.data.birthday;
 				_this.avatar = res.data.avatar;
+				
 				if(_this.birthday!='请选择'){
 					_this.date = _this.birthday;
+				}
+				if(_this.type === 1) {
+					_this.images.push(res.data.business_license)
 				}
 			} else {
 				//报错了
@@ -203,5 +318,46 @@ export default {
 }
 .cell-item-hd{
 	width: 160rpx;
+}
+
+
+.evaluate-c-b{
+	overflow: hidden;
+	padding: 0 20upx;
+}
+.upload-img{
+	width: 146upx;
+	height: 146upx;
+	margin: 14upx;
+	text-align: center;
+	color: #999999;
+	font-size: 22upx;
+	border: 2upx solid #E1E1E1;
+	border-radius: 4upx;
+	display: inline-block;
+	float: left;
+	padding: 24upx 0;
+}
+.goods-img-item{
+	width: 174upx;
+	height: 174upx;
+	padding: 14upx;
+	float: left;
+	position: relative;
+}
+.goods-img-item:nth-child(4n){
+	margin-right: 0;
+}
+.goods-img-item image{
+	width: 100%;
+	height: 100%;
+}
+.del{
+	width: 30upx !important;
+	height: 30upx !important;
+	position: absolute;
+	right: 0;
+	top: 0;
+	z-index: 999;
 }
 </style>

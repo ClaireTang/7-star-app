@@ -2,8 +2,8 @@
     "name" : "七星优购",
     "appid" : "__UNI__ABC795D",
     "description" : "网上综合商城",
-    "versionName" : "1.0.1",
-    "versionCode" : 101,
+    "versionName" : "1.0.6",
+    "versionCode" : 106,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -19,7 +19,8 @@
         /* 模块配置 */
         "modules" : {
             "OAuth" : {},
-            "Payment" : {}
+            "Payment" : {},
+            "Share" : {}
         },
         /* 应用发布信息 */
         "distribute" : {
@@ -64,13 +65,18 @@
                     }
                 },
                 "payment" : {
-                    "alipay" : {},
                     "weixin" : {
                         "appid" : "wx54f036caa359a792",
                         "UniversalLinks" : ""
                     }
                 },
-                "ad" : {}
+                "ad" : {},
+                "share" : {
+                    "weixin" : {
+                        "appid" : "wx54f036caa359a792",
+                        "UniversalLinks" : ""
+                    }
+                }
             },
             "icons" : {
                 "android" : {
@@ -107,6 +113,29 @@
             "splashscreen" : {
                 "android" : {
                     "xhdpi" : "C:/Users/Administrator/Desktop/企业图片/splash.png"
+                }
+            }
+        },
+        "nativePlugins" : {
+            "shoot-sharetrace" : {
+                "sharetrace-appkey" : "e74a810e98c3ade2",
+                "__plugin_info__" : {
+                    "name" : "sharetrace 免填邀请码",
+                    "description" : "sharetrace uniapp 插件",
+                    "platforms" : "Android,iOS",
+                    "url" : "https://ext.dcloud.net.cn/plugin?id=1893",
+                    "android_package_name" : "com.hnsqixing.shop",
+                    "ios_bundle_id" : "",
+                    "isCloud" : true,
+                    "bought" : 1,
+                    "pid" : "1893",
+                    "parameters" : {
+                        "sharetrace-appkey" : {
+                            "des" : "sharetrace appkey",
+                            "key" : "com.sharetrace.APP_KEY",
+                            "value" : ""
+                        }
+                    }
                 }
             }
         }

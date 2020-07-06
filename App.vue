@@ -1,30 +1,33 @@
 <script>
+	import {
+		apiBaseUrl
+	} from '@/config/config.js'
 	export default {
 		onLaunch() {
-			//#ifdef APP-PLUS  
-			var server = "https://shop.hnsqixing.com/merapi/upgrade/version"; //检查更新地址  
+			// #ifdef APP-PLUS  
+			var server = `${apiBaseUrl}merapi/upgrade/version`; //检查更新地址  
 			var req = { //升级检测数据  
-				"appid": plus.runtime.appid,  
-				"version": plus.runtime.version  
-			};  
-			uni.request({  
-				url: server,  
-				data: req,  
-				success: (res) => {  
-					if (res.statusCode == 200 && res.data.status === 1) {  
+				"appid": plus.runtime.appid,
+				"version": plus.runtime.version
+			};
+			uni.request({
+				url: server,
+				data: req,
+				success: (res) => {
+					if (res.statusCode == 200 && res.data.status === 1) {
 						uni.showModal({ //提醒用户更新  
-							title: "更新提示",  
-							content: res.data.note,  
-							success: (res) => {  
-								if (res.confirm) {  
-									plus.runtime.openURL(res.data.url);  
-								}  
-							}  
-						})  
-					}  
-				}  
-			})  
-			//#endif  
+							title: "更新提示",
+							content: `${res.data.note}`,
+							success: (res2) => {
+								if (res2.confirm) {
+									plus.runtime.openURL(res.data.url);
+								}
+							}
+						})
+					}
+				}
+			})
+			// #endif  
 			// 获取店铺配置信息  全局只请求一次
 			this.$api.shopConfig(res => {
 				this.$store.commit('config', res)
@@ -46,7 +49,7 @@
 			});
 
 			// #ifdef APP-PLUS || APP-PLUS-NVUE
-			this.checkVersion()
+			// this.checkVersion()
 			// #endif
 		},
 		onShow: function() {
@@ -61,11 +64,15 @@
 			checkVersion() {
 				// 获取应用版本号
 				let version = plus.runtime.version;
+				this.$common.successToShow(version,'version')
 
 				//检测当前平台，如果是安卓则启动安卓更新
 				uni.getSystemInfo({
 					success: res => {
 						this.updateHandler(res.platform, version);
+					},
+					fail: error => {
+						this.$common.successToShow('检测当前平台失败')
 					}
 				})
 			},
@@ -78,6 +85,7 @@
 				let _this = this;
 				this.$api.getAppVersion(data,
 					res => {
+						this.$common.successToShow(res,'判断版本是否有更新')
 						if (res.status && res.data[0].version) {
 							const info = res.data[0];
 							if (info.version !== '' && info.version > version) {
@@ -92,6 +100,8 @@
 									}
 								})
 							}
+						}else{
+							this.$common.successToShow(res,'判断失败了')
 						}
 					}
 				)

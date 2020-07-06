@@ -8,7 +8,7 @@
 			<view class="reg-item flc">
 				<input class="reg-item-input" placeholder-class="login-item-i-p fsz26" type="text" v-model="code" placeholder="请输入验证码" />
 				<view :class="sendCodeBtn" @click="sendCode" v-if="verification">发送验证码</view>
-				<view class="btn btn-g" v-if="!verification">{{ timer }} 秒后重新获取</view>
+				<view class="btn btn-g" v-if="!verification">{{ register_timer }} 秒后重新获取</view>
 			</view>
 			<view class="reg-item">
 				<input class="login-item-input" :password="true" placeholder-class="login-item-i-p fsz26" type="text" v-model="pwd" placeholder="请输入密码" />
@@ -33,26 +33,20 @@ export default {
 	mixins: [goBack],
 	data() {
 		return {
+			yaoqingcode: 0,
 			maxMobile: 11,
 			mobile: '', // 用户手机号
 			code: '', // 短信验证码
 			pwd: '', // 用户密码
 			verification: true, // 通过v-show控制显示获取还是倒计时
-			timer: 60, // 定义初始时间为60s
+			register_timer: 60, // 定义初始时间为60s
 			btnb: 'btn btn-c btn-square btn-all' //按钮背景
 		};
 	},
 	onLoad(options) {
-		let _this = this;
-		_this.timer = parseInt(_this.$db.get('timer'));
-		if (_this.timer != null && _this.timer > 0) {
-			_this.countDown();
-			_this.verification = false;
-		}
-
-		if (options.invitecode) {
-			this.$db.set('invitecode', options.invitecode);
-		}
+		// if (options.invitecode) {
+		// 	this.$db.set('invitecode', options.invitecode);
+		// }
 	},
 	computed: {
 		// 验证手机号
@@ -95,11 +89,12 @@ export default {
 			});
 			return true;
 		}
-		_this.timer = parseInt(_this.$db.get('timer'));
-		if (_this.timer != null && _this.timer > 0) {
+		_this.register_timer = parseInt(_this.$db.get('register_timer'));
+		if (_this.register_timer != null && _this.register_timer > 0) {
 			_this.countDown();
 			_this.verification = false;
 		}
+		
 	},
 	methods: {
 		// 发送短信验证码
@@ -112,7 +107,7 @@ export default {
 					this.$common.loadToHide();
 					this.$api.sms({ mobile: this.mobile, code: 'reg' }, res => {
 						if (res.status) {
-							this.timer = 60;
+							this.register_timer = 60;
 							this.verification = false;
 							this.$common.successToShow(res.msg);
 							this.countDown(); // 执行验证码计时
@@ -128,13 +123,13 @@ export default {
 		countDown() {
 			let auth_timer = setInterval(() => {
 				// 定时器设置每秒递减
-				this.timer--; // 递减时间
+				this.register_timer--; // 递减时间
 				uni.setStorage({
-					key: 'timer',
-					data: this.timer,
+					key: 'register_timer',
+					data: this.register_timer,
 					success: function() {}
 				});
-				if (this.timer <= 0) {
+				if (this.register_timer <= 0) {
 					this.verification = true; // 60s时间结束还原v-show状态并清除定时器
 					clearInterval(auth_timer);
 				}
@@ -155,29 +150,56 @@ export default {
 				};
 
 				// 获取邀请码
-				let invicode = this.$db.get('invitecode');
-				if (invicode) {
-					data.invitecode = invicode;
+				// let invicode = this.$db.get('invitecode');
+				// if (invicode) {
+				// 	data.invitecode = invicode;
+				// }
+				if (this.$db.get('yaoqingcode')) {
+					data.yaoqingcode = this.$db.get('yaoqingcode');
 				}
+				
 				this.$api.smsLogin(data, res => {
 					if (res.status) {
 						this.$db.set('userToken', res.data);
 						this.$common.successToShow('注册成功', () => {
 							// 清除随机uid 和 邀请码
 							this.$db.del('uuid');
-							this.$db.del('invitecode');
-							let redirect = this.$store.state.redirectPage ? this.$store.state.redirectPage : '/pages/member/index/index';
-							this.$store.commit({
-								type: 'redirect',
-								page: ''
-							});
-							uni.reLaunch({
-								url: redirect
-							});
+							this.redirectHandler()
 						});
 					} else {
 						this.$common.errorToShow(res.msg);
 					}
+				});
+			}
+		},
+		getUserInfo() {
+			return new Promise((resolve,reject) => {
+				this.$api.userInfo({}, res => {
+					if (res.status) {
+						resolve(res.data);
+					}else{
+						reject(res.data)
+					}
+				});
+			})
+		},
+		// 重定向跳转 或者返回上一个页面
+		async redirectHandler() {
+			// this.$db.del('invitecode');
+			this.$db.del('yaoqingcode');
+			let userInfo = await this.getUserInfo()
+			if(userInfo.type === 3){
+				uni.navigateTo({
+					url: '/pages/member/setting/user_info/index'
+				})
+			}else {
+				let redirect = this.$store.state.redirectPage ? this.$store.state.redirectPage : '/pages/member/index/index';
+				// this.$store.commit({
+				// 	type: 'redirect',
+				// 	page: ''
+				// });
+				uni.reLaunch({
+					url: redirect
 				});
 			}
 		},
