@@ -99,9 +99,12 @@ export default {
 		//获取安装携带参数
 		sharetrace.getInstallTrace( data => {
 			// this.showResult(JSON.stringify(data));
+			console.log(data,'data')
 			if(data.code === 200) {
 				// this.yaoqingcode = data.data.paramsData.split('=').slice(1)
-				this.$db.set('yaoqingcode', data.data.paramsData.split('=').slice(1))
+				if(data.data.paramsData) {
+					this.$db.set('yaoqingcode', data.data.paramsData.split('=').slice(1)[0])
+				}
 			}
 		});
 		// #endif
@@ -270,6 +273,9 @@ export default {
 								// if (invitecode) {
 								// 	data.invitecode = invitecode;
 								// }
+								if (_this.$db.get('yaoqingcode')) {
+									data.yaoqingcode = _this.$db.get('yaoqingcode');
+								}
 								_this.$api.appTrustLogin(data, res => {
 									uni.hideLoading();
 									if (res.status) {
@@ -287,12 +293,12 @@ export default {
 											return false;
 										}
 									} else {
-										_this.$common.errorToShow('登录失败，请重试');
+										_this.$common.errorToShow('登录失败，请重试1');
 									}
 								});
 							} else {
 								uni.hideLoading();
-								_this.$common.errorToShow('登录失败，请重试');
+								_this.$common.errorToShow('登录失败，请重试2');
 							}
 						}
 					});

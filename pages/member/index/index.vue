@@ -217,7 +217,7 @@
                     </view>
                     <!-- #endif -->
 					<!-- #ifndef APP-PLUS || APP-PLUS-NVUE -->
-					<view class="item tc" v-for="(item,i) in order" :key="i" v-if="!item.unshowItem" >
+					<!-- <view class="item tc" v-for="(item,i) in order" :key="i" v-if="!item.unshowItem" >
 						<view class="" @click="navigateToHandle(item.router)">
 							<view class="">
 								<image class='cell-hd-icon' :src='item.icon'></image>
@@ -226,7 +226,7 @@
 								<text class="">{{item.name}}</text>
 							</view>
 						</view>
-					</view>
+					</view> -->
 					 <!-- #endif -->
 					<view class="item tc">
 					 	<view @click="smsSet">
@@ -238,7 +238,7 @@
 					 		</view>
 					 	</view>
 					 </view>	
-					<!-- #ifdef APP-PLUS || APP-PLUS-NVUE -->
+					<!-- #ifdef APP-PLUS || APP-PLUS-NVUE || H5 || MP-WEIXIN  -->
 					<view class="item tc">
 						<view @click="yaoqing">
 							<view class="">

@@ -33,17 +33,21 @@
 							<view class='cell-hd-title'>性别</view>
 						</view>
 						<view class='cell-item-bd'>
-							<view class="uni-list">
-								<view class="uni-list-cell-db">
-									<picker mode="selector" @change="bindPickerChange" :value="index" :range="objectSex">
-										<view class="uni-input">{{objectSex[sex]}}</view>
+							<!-- <view class="uni-list">
+								<view class="uni-list-cell-db"> -->
+									<picker mode="selector" @change="bindPickerChange" :value="index" :range="objectSex" class="w-100">
+										<view class="flex space-between w-100">
+											<view class="uni-input">{{objectSex[sex]}}</view>
+											<image class='icon' src='/static/image/ic-pull-down.png'></image>
+										</view>
+										
 									</picker>
-								</view>
-							</view>
+							<!-- 	</view>
+							</view> -->
 						</view>
-						<view class='cell-item-ft'>
+						<!-- <view class='cell-item-ft'>
 							<image class='cell-ft-next icon' src='/static/image/ic-pull-down.png'></image>
-						</view>
+						</view> -->
 					</view>
 				<!-- #endif -->
 				<view class='cell-item cell-item-mid right-img'>
@@ -51,16 +55,12 @@
 						<view class='cell-hd-title'>生日</view>
 					</view>
 					<view class='cell-item-bd'>
-						<view class="uni-list">
-							<view class="uni-list-cell-db">
-						        <picker mode="date" :value="date" :start="startDate" :end="endDate" @change="bindDateChange">
-						            <view class="uni-input">{{birthday}}</view>
-						        </picker>
-						    </view>
-						</view>
-					</view>
-					<view class='cell-item-ft'>
-						<image class='cell-ft-next icon' src='/static/image/ic-pull-down.png'></image>
+						<picker mode="date" :value="date" :start="startDate" :end="endDate" @change="bindDateChange" class="w-100">
+							<view class="flex space-between w-100">
+								<view class="uni-input">{{birthday}}</view>
+								<image class='cell-ft-next icon' src='/static/image/ic-pull-down.png'></image>
+							</view>
+						</picker>
 					</view>
 				</view>
 				<view class='cell-item cell-item-mid right-img'>
@@ -68,16 +68,12 @@
 						<view class='cell-hd-title'>类别</view>
 					</view>
 					<view class='cell-item-bd'>
-						<view class="uni-list">
-							<view class="uni-list-cell-db">
-								<picker mode="selector" @change="bindTypePickerChange" :value="indexType" :range="objectType">
-									<view class="uni-input">{{objectType[type]}}</view>
-								</picker>
+						<picker mode="selector" @change="bindTypePickerChange" :value="indexType" :range="objectType" class="w-100">
+							<view class="flex space-between w-100">
+								<view class="uni-input">{{objectType[type]}}</view>
+								<image class='cell-ft-next icon' src='/static/image/ic-pull-down.png'></image>
 							</view>
-						</view>
-					</view>
-					<view class='cell-item-ft'>
-						<image class='cell-ft-next icon' src='/static/image/ic-pull-down.png'></image>
+						</picker>
 					</view>
 				</view>
 				<view class='cell-item right-img' v-if="type === 1">
@@ -315,6 +311,8 @@ export default {
 .cell-item-bd{
 	color: #666;
 	font-size: 26upx;
+	width: 100%;
+	padding-right: 0;
 }
 .cell-item-hd{
 	width: 160rpx;

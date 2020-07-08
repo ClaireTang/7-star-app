@@ -19,24 +19,34 @@
 					<view class="text">我邀请的 ({{userdata.number}})</view>
 				</view>
 			</view>
+			<!-- #ifdef APP-PLUS || H5 -->
 			<view class="canvas">
-				<canvas :style="{ width: cansWidth + 'px', height: cansHeight + 'px', borderRadius: '10px', overflow: 'hidden' }" canvas-id="firstCanvas"></canvas>
+				<canvas :style="{ width: cansWidth + 'px', height: cansHeight + 'px', borderRadius: '10px', overflow: 'hidden' }"
+				 canvas-id="firstCanvas"></canvas>
 			</view>
-			
+			<!-- #endif -->
+
+
 			<view class="rule">
 				<view class="title">邀请奖励规则</view>
 				<view class="text-second">
-					<view>1、有效用户定义：下载后当时完成注册</view>
+					<view>1、有效用户定义：完成注册</view>
 					<view>2、七星优购保留本活动的最终解释权，并经严查恶意刷好友等虚假邀请行为，一经发现将取消奖励资格</view>
 				</view>
 			</view>
 		</view>
-		
+		<!-- #ifdef APP-PLUS || H5 -->
 		<view class="footer bottom">
-				<view @click="saveCans(1)">保存海报</view>
-				<view @click="saveCans(2)">一键邀请</view>
+			<view @click="saveCans(1)">保存海报</view>
+			<view @click="saveCans(2)">一键邀请</view>
 		</view>
-		
+		<!-- #endif -->
+		<!-- #ifdef MP-WEIXIN -->
+		<view class="footer bottom">
+			<button open-type="share" type="primary">分享</button>
+		</view>
+		<!-- #endif -->
+
 
 		<jc-popUp position="bottom" ref="pop1" markTapHide="true" closeIcon="false">
 			<view class="tishi-box">
@@ -45,7 +55,7 @@
 					<view>微信好友</view>
 				</view>
 				<view class="tishi-box-a" @click="bengyouquan">
-					<image src="/static/images/circle-of-friends.png" mode="scaleToFill"></image>
+					<image src="/static/image/circle-of-friends.png" mode="scaleToFill"></image>
 					<view>朋友圈</view>
 				</view>
 			</view>
@@ -55,7 +65,9 @@
 
 <script>
 	var that
-	import {apiBaseUrl} from '@/config/config.js'
+	import {
+		apiBaseUrl
+	} from '@/config/config.js'
 	import jcPopUp from '@/components/tankuang/jc-popUp/jc-popUp.vue'; //分享弹框，插件地址  https://ext.dcloud.net.cn/plugin?id=249
 	export default {
 		components: {
@@ -88,13 +100,28 @@
 			that.uid = option.uid
 		},
 		onShow() {
-			that.ifwxl()
+			// that.ifwxl()
+			// #ifdef APP-PLUS || H5
 			that.huizhihaibao();
+			// #endif
+			// #ifdef MP-WEIXIN
+			that.weixinGetInvData();
+			// #endif
 		},
 		methods: {
 			// 判断是不是微信浏览器
-			ifwxl(){
-				that.ifwx = that.$common.isWeiXinBrowser()
+			// ifwxl(){
+			// 	that.ifwx = that.$common.isWeiXinBrowser()
+			// },
+			onShareAppMessage() {
+				return {
+					// title: '好友邀你加入七星优购',
+					// imageUrl: ''
+					// path: 'page/component/pages/button/button',
+					title: this.$store.state.config.share_title,
+					imageUrl: this.$store.state.config.share_image,
+					path: `/pages/login/choose/index?uid=${that.userdata.code}`
+				}
 			},
 			//去佣金明细
 			toMoney() {
@@ -104,7 +131,7 @@
 			toList() {
 				this.$common.navigateTo('/pages/member/invite/list');
 			},
-			
+
 			//获取数据
 			getInviteData() {
 				return new Promise((resolve, reject) => {
@@ -117,20 +144,29 @@
 					});
 				})
 			},
-			
+			async weixinGetInvData() {
+				uni.showLoading({
+					title: '加载中',
+					mask: true
+				});
+				that.userdata = await that.getInviteData()
+				console.log(that.userdata)
+				uni.hideLoading();
+			},
 			async huizhihaibao() {
 				uni.showLoading({
 					title: '加载中',
 					mask: true
 				});
 				that.userdata = await that.getInviteData()
+				
 				that.userdata.erweima = `${apiBaseUrl}merapi/upgrade/qrcode/uid/${that.uid}`,
-				that.selseimg("/static/images/j-2.jpg")
+					that.selseimg("/static/images/j-2.jpg")
 				uni.hideLoading();
 			},
 			//画带圆角的矩形
-			roundRect(ctx,x, y, w, h, r) {
-				if (w< 2 * r) r = w / 2;
+			roundRect(ctx, x, y, w, h, r) {
+				if (w < 2 * r) r = w / 2;
 				if (h < 2 * r) r = h / 2;
 				ctx.beginPath();
 				ctx.moveTo(x + r, y);
@@ -142,13 +178,13 @@
 			},
 			//绘制海报
 			selseimg(e) {
-				
+
 				const context = uni.createCanvasContext('firstCanvas')
 
 				context.drawImage(e, 0, 0, 260, 370) //海报背景
-				
+
 				// that.roundRect(context,10, 280, 260, 110, 10);
-				
+
 				// context.setFillStyle('white')
 				// context.fillRect(10, 280, 260, 110)
 
@@ -176,7 +212,7 @@
 				// context.drawImage(that.userdata.img, 17, 322, 55, 55) //头像
 				// context.restore()
 				context.draw()
-				
+
 			},
 			saveCans(e) { //保存海报
 				uni.showLoading({
@@ -270,20 +306,20 @@
 				});
 				that.$refs.pop1.hide();
 			},
-			qq() {
-				uni.share({
-					provider: "qq",
-					type: 2,
-					imageUrl: that.imgsrc,
-					success: function(res) {
-						console.log(JSON.stringify(res));
-					},
-					fail: function(err) {
-						console.log(JSON.stringify(err));
-					}
-				});
-				that.$refs.pop1.hide();
-			}
+			// qq() {
+			// 	uni.share({
+			// 		provider: "qq",
+			// 		type: 2,
+			// 		imageUrl: that.imgsrc,
+			// 		success: function(res) {
+			// 			console.log(JSON.stringify(res));
+			// 		},
+			// 		fail: function(err) {
+			// 			console.log(JSON.stringify(err));
+			// 		}
+			// 	});
+			// 	that.$refs.pop1.hide();
+			// }
 		}
 	}
 </script>
@@ -292,39 +328,40 @@
 	/* page {
 		background-color: #F1F1F1;
 	} */
-	page {
-		/* #ifndef APP-PLUS */
+	/deep/ page {
+		/* #ifdef H5 */
 		height: 100%;
 		/* #endif */
-		/* #ifdef APP-PLUS */
-		height: 100vh;
+		/* #ifdef APP-PLUS || MP-WEIXIN */
+		height: 100%;
 		/* #endif */
 	}
-	
+
 	.bg {
-		/* #ifndef APP-PLUS */
+		/* #ifndef APP-PLUS || MP-WEIXIN */
 		height: 100%;
 		/* #endif */
-		/* #ifdef APP-PLUS */
+		/* #ifdef APP-PLUS || MP-WEIXIN */
 		height: 100vh;
 		/* #endif */
 		background-color: #fff;
 		// padding: 0 60rpx;
-	
+
 		.content {
 			padding: 20rpx 60rpx 100rpx;
 			min-height: 100%;
 			box-sizing: border-box;
 			background-color: #fff;
 		}
-	
+
 		.footer {
 			margin-top: -100rpx;
 			height: 100rpx;
 			align-items: center;
 			display: flex;
 			justify-content: space-around;
-			/* #ifdef APP-PLUS */
+			// padding: 0 60rpx;
+			/* #ifdef APP-PLUS || MP-WEIXIN */
 			position: fixed;
 			width: 100%;
 			left: 0;
@@ -332,6 +369,7 @@
 			/* #endif */
 		}
 	}
+
 	.quat {
 		display: flex;
 		margin-bottom: 20rpx;
@@ -340,29 +378,32 @@
 		border-radius: 20rpx;
 		align-items: center;
 		justify-content: space-around;
-	
+
 		.icon {
 			width: 50rpx;
 			height: 50rpx;
 		}
-	
+
 		.item {
 			text-align: center;
 			flex: 1 1 auto;
 			color: #8a8a8a;
-	
+
 			&:last-child {
 				border-left: 2rpx solid #d3d3d3;
 			}
 		}
 	}
+
 	.rule {
 		margin-top: 30rpx;
 		line-height: 2;
+
 		.title {
 			font-size: 16px;
 		}
 	}
+
 	.footer view:first-child {
 		padding: 20upx 60upx;
 		background: #FF8A00;
@@ -370,7 +411,7 @@
 		font-size: 30upx;
 		color: #FFFFFF;
 	}
-	
+
 	.footer view:last-child {
 		padding: 20upx 60upx;
 		background: #FF5256;
@@ -378,6 +419,10 @@
 		font-size: 30upx;
 		color: #FFFFFF;
 	}
+	.footer button {
+		width: 100%;
+	}
+
 	.pageHeader {
 		height: var(--status-bar-height);
 		background-color: #FFFFFF;
@@ -444,6 +489,4 @@
 		height: 100upx;
 		border-radius: 50%;
 	}
-	
-	
 </style>

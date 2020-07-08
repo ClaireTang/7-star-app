@@ -14,7 +14,7 @@
 		<view class="login-b">
 			<!-- #ifdef H5|APP-PLUS|APP-PLUS-NVUE -->
 			<view v-if="user_wx_id">
-				<button :class="regButtonClass" @click="toBind()" hover-class="btn-hover">登录</button>
+				<button :class="regButtonClass" @click="toBind()" hover-class="btn-hover">登录h5/app</button>
 				<view class="color-9 fsz24 agreement">
 					登录即代表你同意
 					<text @click="goAgreement()" class="color-o">用户协议</text>
@@ -24,7 +24,7 @@
 			</view>
 
 			<view v-else>
-				<button :class="regButtonClass" @click="login()" hover-class="btn-hover">登录</button>
+				<button :class="regButtonClass" @click="login()" hover-class="btn-hover">登录ggg</button>
 				<view class="color-9 fsz24 agreement">
 					登录即代表你同意
 					<text @click="goAgreement()" class="color-o">用户协议</text>
@@ -38,7 +38,7 @@
 			</view>
 			<!-- #endif -->
 			<!-- #ifdef MP -->
-			<button :class="regButtonClass" @click="showTopTips()" hover-class="btn-hover">登录</button>
+			<button :class="regButtonClass" @click="showTopTips()" hover-class="btn-hover">登录wx</button>
 			<!-- #endif -->
 		</view>
 	</view>
