@@ -373,7 +373,12 @@
 						router: '../history/index',
 						unshowItem: false
 					},
-					
+					sign: {
+						name: '每日签到',
+						icon: '/static/image/integral.png',
+						router: '../sign/sign',
+						unshowItem: false
+					},
 				},
 				clerk: [{
 						name: '提货单列表',

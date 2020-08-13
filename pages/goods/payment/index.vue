@@ -146,15 +146,26 @@ export default {
 				payment_type: this.type
 			};
 			this.$api.paymentsCheckpay(data, res => {
-				if (res.status) {
-					this.orderInfo = res.data;
-					/* console.log(this.orderInfo)
-						if(this.orderInfo.pay_status == 2){
-							this.$common.redirectTo(
-								'/pages/goods/payment/result?order_id=' + this.orderInfo.order_id
-							)
-						} */
-				}
+					if(res.code == -1){
+						this.$api.pointConvertGoods({order_id:this.orderId,},res2=>{
+							if(res2.code==200){
+								this.$common.redirectTo(
+									'/pages/goods/payment/result?order_id=' + this.orderId,
+								)
+							}else{
+								this.$common.errorToShow(res2.msg);
+								this.$common.redirectTo(
+									'/pages/member/order/orderlist',
+								)
+							}
+						});
+						return;
+					}else if (res.status) {
+							this.orderInfo = res.data;
+							
+					}else{
+						this.$common.errorToShow(res2.msg);
+					}
 			});
 		},
 		// 获取用户信息

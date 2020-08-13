@@ -5,7 +5,7 @@
 				可用积分
 			</view>
 			<view class="integral-top-n">
-				{{ pointList.length ? pointList[0].balance : 0}}
+				{{total_point}}
 			</view>
 			<view class="integral-top-d">
 				{{ nowDate }}
@@ -17,6 +17,11 @@
 					<view class='cell-item-bd'>
 						<view class="cell-bd-view black-text">
 							<text class="cell-bd-text">积分记录</text>
+						</view>
+					</view>
+					<view class='cell-item-bd' @click="navigateToHandle('/pages/point/index/index')">
+						<view class="cell-bd-view padding sign-btn">
+							<text class="cell-bd-text">积分商城</text>
 						</view>
 					</view>
 				</view>
@@ -54,6 +59,7 @@ export default {
 			page: 1,
 			limit: 10,
 			pointList: [], // 积分记录
+			total_point:0,
 			loadStatus: 'more'
 		}
 	},
@@ -67,6 +73,10 @@ export default {
 		}
 	},
 	methods: {
+		navigateToHandle(url){
+			console.log(url);
+			this.$common.navigateTo(url);
+		},
 		userPointLog () {
 			let _this = this
 			let data = {
@@ -75,8 +85,16 @@ export default {
 			}
 			
 			_this.loadStatus = 'loading'
-			
-			_this.$api.pointLog(data, function (res) {
+			_this.$api.getMyPoint(data, function (res) {
+				if (res.code==200) {
+						_this.total_point=res.data.point;
+				} else {
+					// 接口請求出錯
+					_this.$common.errorToShow(res.msg)
+					_this.loadStatus = 'more'
+				}
+			});
+ 			_this.$api.pointLog(data, function (res) {
 				if (res.status) {
 					_this.pointList = [..._this.pointList, ...res.data]
 					// 判断数据是否加载完毕
@@ -143,5 +161,20 @@ export default {
 .cell-item .black-text .cell-bd-text{
 	font-size: 28upx;
 	color: #333;
+}
+.sign-btn {
+		width: 219rpx;
+		height: 70rpx;
+		background: linear-gradient(90deg, rgba(233, 180, 97, 1), rgba(238, 204, 137, 1));
+		border-radius: 35rpx;
+		font-size: 28rpx;
+		font-weight: 500;
+		color: rgba(255, 255, 255, 0.9);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+}
+.padding{
+	padding: 3rpx 12rpx;
 }
 </style>
