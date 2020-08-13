@@ -199,7 +199,7 @@
 				<view class="sale-title">
 					<image class='cell-hd-icon' src='/static/image/other.png'></image>
 					<view class="">
-						其他
+						其它
 					</view>
 				</view>
 				<view class="flc sale-list">
