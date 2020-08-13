@@ -35,10 +35,15 @@
 				</view>
 			</view>
 		</view>
-		<!-- #ifdef APP-PLUS || H5 -->
+		<!-- #ifdef APP-PLUS -->
 		<view class="footer bottom">
 			<view @click="saveCans(1)">保存海报</view>
 			<view @click="saveCans(2)">一键邀请</view>
+		</view>
+		<!-- #endif -->
+		<!-- #ifdef H5 -->
+		<view class="footer bottom">
+			<view>截图保存，邀请朋友下载</view>
 		</view>
 		<!-- #endif -->
 		<!-- #ifdef MP-WEIXIN -->

@@ -5,13 +5,9 @@
 	export default {
 		onLaunch() {
 			// #ifdef APP-PLUS  
-			// uni.showModal({
-			// 	title: '版本号',
-			// 	content: plus.runtime.version
-			// })
-			
-			var server = `${apiBaseUrl}merapi/upgrade/version`; //检查更新地址  
+			var server = `${apiBaseUrl}merapi/Upgrade/getAllVersion`; //检查更新地址  
 			var req = { //升级检测数据  
+				"type": 'shop',
 				"appid": plus.runtime.appid,
 				"version": plus.runtime.version
 			};
