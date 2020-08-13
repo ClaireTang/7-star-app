@@ -9,7 +9,7 @@
 				</view>
 				<view class='cell-item-bd cell-item-bd-block'>
 					<view class="cell-bd-view">
-						<text class="cell-bd-text">{{ item.name }}========</text>
+						<text class="cell-bd-text">{{ item.name }}</text>
 					</view>
 					<view class="cell-bd-view">
 						<text class="cell-bd-text address">{{ item.memo }}</text>
