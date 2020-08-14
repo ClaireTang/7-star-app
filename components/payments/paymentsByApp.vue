@@ -100,7 +100,7 @@
 			},
 			// 用户点击支付方式处理
 			toPayHandler(code) {
-				this.popShow = true;
+				// this.popShow = true;
 				let _this = this
 
 				let data = {
