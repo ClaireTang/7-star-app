@@ -105,7 +105,7 @@
 			},
 			// 用户点击支付方式处理
 			toPayHandler(e) {
-				this.popShow = true;
+				// this.popShow = true;
 				let code = e.target.value.code;
 				let formId = e.detail.formId;
 
