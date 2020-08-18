@@ -184,7 +184,7 @@
                     '选择优惠券',
                     '输入券码',
                 ],
-                orderType: 1, // 商品订单类型 1
+                orderType: 1, // 商品订单类型 1（包含积分兑换）
                 current: 0,
                 isUsePoint: false,	// 是否勾选使用积分
                 userPointNums: 0, // 用户的总积分
@@ -213,6 +213,7 @@
             let cartIds = options.cart_ids;
             if(options.order_type){
                 this.params.order_type = options.order_type;
+				console.log(this.params.order_type)
             }
             if(options.team_id){
                 this.team_id = options.team_id;
@@ -558,22 +559,21 @@
 				// #endif
                 data = Object.assign(data, delivery)
                 this.$api.createOrder(data, res => {
-                    if (res.status) {
-                        // 创建订单成功 去支付
+					if (res.status) {
+					    // 创建订单成功 去支付
 						// this.submitStatus = false;
-						this.$api.pointConvertGoods({order_id:res.data.order_id, cart_ids: this.params.ids},res2=>{
-							if(res2.code==200){
-								this.$common.redirectTo(
-									'/pages/goods/payment/result?order_id=' + res.data.order_id
-								)
-							}else{
-								this.$common.errorToShow(res2.msg);
-							}
-						});
-                    }else{
-                        this.$common.errorToShow(res.msg);
+						// 判断是否为0元订单,如果是0元订单直接支付成功
+						if(res.data.pay_status=='2'){
+							this.$common.redirectTo(
+								'/pages/goods/payment/result?order_id=' + res.data.order_id
+							)
+						}else{
+							this.$common.redirectTo('/pages/goods/payment/index?order_id=' + res.data.order_id + '&type=' + this.orderType + '&childType=pointpay')
+						}
+					}else{
+					    this.$common.errorToShow(res.msg);
 						// this.submitStatus = false;
-                    }
+					}
                 },res => {
 					this.submitStatus = false;
 				})

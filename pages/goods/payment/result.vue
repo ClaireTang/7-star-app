@@ -53,12 +53,15 @@ export default {
 			this.$api.paymentInfo(data, res => {
 				if (res.status) {
 					let info = res.data;
+					console.log(info)
 					if (info.payment_code === 'alipay') {
 						info.payment_name = '支付宝支付';
 					} else if (info.payment_code === 'wechatpay') {
 						info.payment_name = '微信支付';
 					} else if (info.payment_code === 'balancepay') {
 						info.payment_name = '余额支付';
+					} else if (info.payment_code === 'pointpay') {
+						info.payment_name = '积分兑换';
 					}
 
 					// 获取订单号
@@ -72,6 +75,7 @@ export default {
 					}
 					this.status = true;
 					this.paymentInfo = info;
+					
 				} else {
 					this.$common.errorToShow(res.msg);
 				}

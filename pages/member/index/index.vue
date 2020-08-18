@@ -239,7 +239,7 @@
 					 	</view>
 					 </view>	
 					<!-- #ifdef APP-PLUS || APP-PLUS-NVUE || H5 || MP-WEIXIN  -->
-					<view class="item tc">
+					<!-- <view class="item tc">
 						<view @click="yaoqing">
 							<view class="">
 								<image src='/static/image/ic-me-invite.png' class='cell-hd-icon'></image>
@@ -248,11 +248,19 @@
 								<text class="">邀请好友</text>
 							</view>
 						</view>
-					</view>	
+					</view>	 -->
 					<!-- #endif -->
 					<!-- #ifdef H5 || APP-PLUS || APP-PLUS-NVUE -->
 					<view class="item tc">
-						<view @click="showChat">
+						<!-- <view @click="showChat">
+							<view class="">
+								<image src='/static/image/me-ic-phone.png' class='cell-hd-icon'></image>
+							</view>
+							<view class="text">
+								<text class="">联系在线客服</text>
+							</view>
+						</view> -->
+						<view @click="showTel">
 							<view class="">
 								<image src='/static/image/me-ic-phone.png' class='cell-hd-icon'></image>
 							</view>
@@ -397,7 +405,7 @@
 						name: '邀请好友',
 						icon: '/static/image/ic-me-invite.png',
 						router: '../invite/index',
-						unshowItem: true
+						unshowItem: false
 					}
 				},
 				list: 2,
@@ -609,6 +617,12 @@
 					return this.checkIsLogin()
 				}
 				this.$common.navigateTo('../after_sale/list')
+			},
+			// 手机号拨号
+			showTel() {
+				uni.makePhoneCall({
+				    phoneNumber: '03962632777' //仅为示例
+				});
 			},
 			//在线客服,只有手机号的，请自己替换为手机号
 			showChat() {

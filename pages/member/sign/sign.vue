@@ -135,7 +135,7 @@ export default {
 			that.$api.getSignDay({
 				month: query
 			},res => {
-
+				console.log(res.data,'res')
 				if (res.code == 200) {
 					let emptyDays = that.calculateEmptyGrids();
 					that.cuntinueDays = that.cuntinueDays === 0 ? res.data.month_total : that.cuntinueDays;
@@ -188,7 +188,7 @@ export default {
 					that.cuntinueDays = res.data.month_total;
 					that.showSign = true;
 				}else{
-					that.$common.errorToShow(rs.msg);
+					that.$common.errorToShow(res.msg);
 				}
 			});
 		},

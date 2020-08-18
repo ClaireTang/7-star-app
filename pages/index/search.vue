@@ -35,6 +35,7 @@
 export default {
 	data() {
 		return {
+			goodsType: '',
 			keys: [],
 			key: '',
 			navType: 'toNav',
@@ -45,6 +46,9 @@ export default {
 		recommend() {
 			return this.$store.state.config.recommend_keys
 		}
+	},
+	onLoad(options) {
+		this.goodsType = options.goodsType || ''
 	},
 	methods: {
 		//搜索
@@ -66,10 +70,17 @@ export default {
 				}
 				this.$db.set('search_key', search_key);
 				this.$db.set('search_term', keys);
-				this.$common.navigateTo('/pages/classify/index?key=' + keys);
+				
+				this.$common.navigateTo(`/pages/classify/index?key=${keys}${this.addOtherParams()}`);
 			}
 		},
-
+		addOtherParams() {
+			if(this.goodsType === 'pointGoods') {
+				return "&goodsType=pointGoods"
+			}else{
+				return ''
+			}
+		},
 		//清除
 		deleteKey: function () {
 			//删除显示
@@ -95,7 +106,7 @@ export default {
 				search_key.unshift(keys);
 			}
 			this.$db.set('search_key', search_key);
-			this.$common.navigateTo('/pages/classify/index?key=' + keys);
+			this.$common.navigateTo(`/pages/classify/index?key=${keys}${this.addOtherParams()}`);
 		},
 	},
 	//加载触发

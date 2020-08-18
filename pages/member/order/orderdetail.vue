@@ -114,7 +114,8 @@
 						<view class='little-right-t'>
 							<view class='goods-name list-goods-name' @click="goodsDetail(item.goods_id)" v-if="orderInfo.order_type == 1">{{ item.name || ''}}</view>
 							<view class='goods-name list-goods-name' @click="pintuanDetail(item.goods_id)" v-else-if="orderInfo.order_type == 2">{{ item.name || ''}}</view>
-							<view class='goods-price'>￥{{ item.price }}</view>
+							
+							<view class='goods-price' v-if="orderInfo.order_point-0 === 0">￥{{ item.price }}</view>
 						</view>
 						<view class="romotion-tip">
 							<view class="romotion-tip-item" v-for="(promotion, key) in item.promotion_list" :key="key">
@@ -161,14 +162,16 @@
 			</view>
 
 			<view class='cell-group margin-cell-group order-price'>
-				<view class='cell-item add-title-item'>
+				<view class='cell-item add-title-item' v-if="orderInfo.order_point - 0 ===0">
 					<view class='cell-item-bd'>
 						<view class="cell-bd-view">
 							<text class="cell-bd-text">商品总价</text>
 						</view>
 					</view>
 					<view class='cell-item-ft'>
+						{{orderInfo.order_point}}
 						<text class="cell-ft-p">￥{{ orderInfo.goods_amount || ''}}</text>
+						<!-- <text class="cell-ft-p">￥{{ orderInfo.point_money || ''}}</text> -->
 					</view>
 				</view>
 				<view class='cell-item add-title-item'>
@@ -228,7 +231,8 @@
 						</view>
 					</view>
 					<view class='cell-item-ft'>
-						<text class="cell-ft-p red-price">￥{{ orderInfo.order_amount || ''}}</text>
+						<text class="cell-ft-p red-price" v-if="orderInfo.order_point - 0 ===0">￥{{ orderInfo.order_amount || ''}}</text>
+						<text class="cell-ft-p red-price" v-else>{{orderInfo.order_point}}积分</text>
 					</view>
 				</view>
 				<view class='cell-item add-title-item' v-if="orderInfo.pay_status > 1">
@@ -253,12 +257,12 @@
 				</view>
 			</view>
 		</view>
-		<view class="button-bottom" v-if="orderInfo.status == 1 || orderInfo.status == 2">
+		<view class="button-bottom" v-if="(orderInfo.status == 1 || orderInfo.status == 2)">
 			<button class='btn btn-circle btn-g' hover-class="btn-hover" v-if="orderInfo.status == 1 && orderInfo.pay_status == 1 && orderInfo.ship_status == 1" @click="cancelOrder(orderInfo.order_id)">取消订单</button>
 			<button class='btn btn-circle btn-w' hover-class="btn-hover" v-if="orderInfo.status == 1 && orderInfo.pay_status == 1" @click="toPay(orderInfo.order_id)">立即支付</button>
 			<button class='btn btn-circle btn-w' hover-class="btn-hover" v-if="orderInfo.status == 1 && orderInfo.pay_status >= 2 && orderInfo.ship_status >= 3 && orderInfo.confirm == 1" @click="tackDeliery(orderInfo.order_id)">确认收货</button>
 			<button class='btn btn-circle btn-w' hover-class="btn-hover" v-if="orderInfo.status === 1 && orderInfo.pay_status >= 2 && orderInfo.ship_status >= 3 && orderInfo.confirm >= 2 && orderInfo.is_comment === 1" @click="toEvaluate(orderInfo.order_id)">立即评价</button>
-			<button class='btn btn-circle btn-w' hover-class="btn-hover" @click="customerService(orderInfo.order_id)" v-if="orderInfo.add_aftersales_status == true">申请售后</button>
+			<button class='btn btn-circle btn-w' hover-class="btn-hover" @click="customerService(orderInfo.order_id)" v-if="orderInfo.add_aftersales_status == true && orderInfo.order_point-0 === 0">申请售后</button>
 			<button class='btn btn-circle btn-w' hover-class="btn-hover" @click="showCustomerService(orderInfo)" v-if="orderInfo.bill_aftersales_id && orderInfo.bill_aftersales_id != false">查看售后</button>
 		</view>
 	</view>

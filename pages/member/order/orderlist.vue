@@ -20,7 +20,7 @@
 							<view class='img-list-item-r little-right'>
 								<view class='little-right-t'>
 									<view class='goods-name list-goods-name' @click="orderDetail(item.order_id)">{{ goods.name }}</view>
-									<view class='goods-price'>￥{{ goods.price }}</view>
+									<view class='goods-price' v-if="item.order_point-0 === 0">￥{{ goods.price }}</view>
 								</view>
 								<view class="romotion-tip">
 									<view class="romotion-tip-item" v-for="(promotion, k) in goods.promotion_list" :key="k">
@@ -39,8 +39,11 @@
 					<view class='cell-group'>
 						<view class='cell-item'>
 							<view class='cell-item-ft goods-num'>
-								<text class='cell-ft-text'>合计<text class="red-price">￥ {{ item.order_amount }}</text></text>
-								<text class='cell-ft-text'>共 {{ item.items.length }} 件</text>
+								<text class='cell-ft-text'>合计：
+									<text class="red-price" v-if="item.order_point-0 === 0">￥ {{ item.order_amount }}</text>
+									<text class="red-price" v-else>{{ item.order_point }}积分</text>
+								</text>
+								<text class='cell-ft-text'>共 {{ item.items.length }} 种</text>
 							</view>
 						</view>
 					</view>
@@ -280,6 +283,7 @@ export default {
 }
 .goods-num .cell-ft-text:first-child{
 	margin-left: 10upx;
+	margin-right: 30upx;
 }
 .order-none{
 	text-align: center;

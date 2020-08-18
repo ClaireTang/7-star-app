@@ -1,5 +1,18 @@
 <template>
 	<view class="point">
+		<!-- 搜索框 -->
+		<view class="search" ref="searchBar" id="search">
+			<view class='search-c' @click='goSearch()'>
+				<view class='search-input search-input-p'>
+					<view class="search-input-p-c">
+						{{keywords}}
+					</view>
+				</view>
+				<image class='icon search-icon' src='/static/image/zoom.png'></image>
+			</view>
+		</view>
+		<!-- 搜索框 -->
+		
 		<view class="uni-padding-wrap">
 			<view class="page-section swiper">
 				<view class="page-section-spacing">
@@ -14,24 +27,10 @@
 			</view>
 		</view>
 		
-
-		<!-- 搜索框 -->
-		<view class="search" ref="searchBar" id="search">
-			<view class='search-c' @click='goSearch()'  >
-				<view class='search-input search-input-p'>
-					<view class="search-input-p-c">
-						{{keywords}}
-					</view>
-				</view>
-				<image class='icon search-icon' src='/static/image/zoom.png'></image>
-			</view>
-		</view>
-		<!-- 搜索框 -->
-
 		<view  v-if="goodsLists.list.length">
 		<view class="goods-list">
 			<view class="goods-item"  v-for="(item, index) in goodsLists.list" :key="index">
-				<navigator @click="goodsDetail(item.id)">
+				<view @click="goodsDetail(item.id)">
 					<view class="goods-image">
 						<image class="image" :src="item.mast_image.url"/>
 					</view>
@@ -48,7 +47,7 @@
 							</text>	
 						</view>	
 					</view>	
-				</navigator>	
+				</view>	
 			</view>	
 		
 		</view>
@@ -73,7 +72,7 @@
 				autoplay: false,
 				interval: 2000,
 				duration: 500,
-				keywords:"搜索",
+				keywords:"",
 				bannerList:[],
 				goodsLists: {
 					loadStatus: 'more',
@@ -95,7 +94,7 @@
 		methods: {
 			goSearch() {
 				uni.navigateTo({
-					url: '/pages/index/search'
+					url: '/pages/index/search?goodsType=pointGoods'
 				});
 			},
 			redirect(item){
@@ -117,13 +116,13 @@
 				let data = {
 					page: this.goodsLists.page,
 					limit: this.goodsLists.limit,
+					keyword: this.keywords
 				}
 				this.goodsLists.loadStatus = 'loading';
-				
 				this.$api.goodsPoints(data,res=>{
 					if (res.code == 200) {
 						let _list = res.data.data;
-						let count = res.data.count;
+						// let count = res.data.count;
 						this.goodsLists.list = [...this.goodsLists.list, ..._list];
 						// 根据count数量判断是否还有数据
 						if (res.data.total > this.goodsLists.list.length) {
@@ -246,10 +245,13 @@
 		line-height: 1.1rem;
 	}
 	.goods-none{
-		padding:30upx;
+		padding-top:100upx;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		color:#999;
+	}
+	.search-input-p-c::after {
+		content: "关键字";
 	}
 </style>

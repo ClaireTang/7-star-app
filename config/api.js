@@ -88,7 +88,12 @@ const methodsToken = [
     'wechat_applets_message-api-settip',
     'wechat_applets_message-api-closetip',
     'wechat_applets_message-api-istip',
-	'user.giveMoney'
+	'user.giveMoney',
+	'user.userSignList',
+	'user.userSign',
+	'user.getMyPoint',
+	'goods.pointSearch',
+	'user.pointConvertGoods'
 ];
 
 const post = (method, data, callback,complete) => {
@@ -603,6 +608,10 @@ export const sign = (data, callback) => post('user.sign', data, callback);
 // 我的积分
 export const myPoint = (data, callback) => post('user.mypoint', data, callback);
 
+// 我的积分(新)
+export const getMyPoint = (data, callback) => post('user.getMyPoint', data, callback);
+
+
 // 积分记录
 export const pointLog = (data, callback) => post('user.userpointlog', data, callback);
 
@@ -846,3 +855,21 @@ export const deshare = (data, callback) => post('user.deshare', data, callback);
 
 //如果是充值订单，充值送钱
 export const giveMoney = (data, callback) => post('user.giveMoney', data, callback);
+
+//获取签到的天数据
+export const getSignDay = (data, callback) => post('user.userSignList', data, callback);
+
+//当日签到
+export const signDay = (data, callback) => post('user.userSign', data, callback);
+
+//积分类型
+export const pointType = (data, callback) => post('user.pointType', data, callback);
+
+
+//积分商城页面
+//banner
+export const pointBanner = (data, callback) => post('goods.pointBanner', data, callback);
+//获取积分商品
+export const goodsPoints = (data, callback) => post('goods.pointSearch', data, callback);
+//积分兑换商品
+export const pointConvertGoods = (data, callback) => post('user.pointConvertGoods', data, callback);

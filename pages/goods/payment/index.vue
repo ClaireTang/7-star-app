@@ -4,7 +4,7 @@
 			<view class="cell-item">
 				<view class="cell-item-hd"><view class="cell-hd-title">订单类型</view></view>
 				<view class="cell-item-ft">
-					<text class="cell-ft-p" v-if="type == 1">商品订单</text>
+					<text class="cell-ft-p" v-if="type == 1">商品订单<text v-if="orderInfo.point-0 > 0">-积分兑换商品</text></text>
 					<text class="cell-ft-p" v-if="type == 2" @click="toRecharge()">充值订单</text>
 					<text class="cell-ft-p" v-if="type == 5">快捷下单</text>
 					<text class="cell-ft-p" v-if="type == 6">付款码</text>
@@ -18,10 +18,19 @@
 					</view>
 				</view>
 				<view class="cell-item">
-					<view class="cell-item-hd"><view class="cell-hd-title">支付金额</view></view>
-					<view class="cell-item-ft">
-						<text class="cell-ft-p red-price">￥{{ orderInfo.money || '' }}</text>
-					</view>
+					<template v-if="orderInfo.point-0 > 0">
+						<view class="cell-item-hd"><view class="cell-hd-title">兑换积分</view></view>
+						<view class="cell-item-ft">
+							<text class="cell-ft-p red-price">{{ orderInfo.point || 0 }}</text>
+						</view>
+					</template>
+					<template v-else>
+						<view class="cell-item-hd"><view class="cell-hd-title">支付金额</view></view>
+						<view class="cell-item-ft">
+							<text class="cell-ft-p red-price">￥{{ orderInfo.money || '' }}</text>
+						</view>
+					</template>
+					
 				</view>
 			</view>
 			<view v-else-if="type == 2">
@@ -43,11 +52,11 @@
 		</view>
 
 		<!-- #ifdef H5 -->
-		<payments-by-h5 :orderId="orderId" :recharge="recharge" :type="type" :uid="userInfo.id"></payments-by-h5>
+		<payments-by-h5 :orderId="orderId" :recharge="recharge" :type="type" :childType="childType" :uid="userInfo.id"></payments-by-h5>
 		<!-- #endif -->
 
 		<!-- #ifdef MP-WEIXIN -->
-		<payments-by-wx :orderId="orderId" :recharge="recharge" :type="type" :uid="userInfo.id"></payments-by-wx>
+		<payments-by-wx :orderId="orderId" :recharge="recharge" :type="type" :childType="childType" :uid="userInfo.id"></payments-by-wx>
 		<!-- #endif -->
 
 		<!-- #ifdef MP-ALIPAY -->
@@ -55,7 +64,7 @@
 		<!-- #endif -->
 
 		<!-- #ifdef APP-PLUS || APP-PLUS-NVUE -->
-		<payments-by-app :orderId="orderId" :recharge="recharge" :type="type" :uid="userInfo.id"></payments-by-app>
+		<payments-by-app :orderId="orderId" :recharge="recharge" :type="type" :childType="childType" :uid="userInfo.id"></payments-by-app>
 		<!-- #endif -->
 
 		<!-- #ifdef MP-TOUTIAO -->
@@ -92,6 +101,7 @@ export default {
 			orderId: 0,
 			recharge: 0, //充值金额
 			type: 1, // 订单类型 1商品订单 2充值订单 5快捷下单 6付款码
+			childType: '',
 			orderInfo: {}, // 订单详情
 			userInfo: {}, // 用户信息
 			form_id: 0
@@ -118,6 +128,7 @@ export default {
 		this.orderId = options.order_id;
 		this.recharge = Number(options.recharge);
 		this.type = Number(options.type);
+		
 		this.form_id = Number(options.form_id);
 		//this.getOrderInfo ()
 		if (this.orderId && this.type == 1) {
@@ -146,26 +157,30 @@ export default {
 				payment_type: this.type
 			};
 			this.$api.paymentsCheckpay(data, res => {
-					if(res.code == -1){
-						this.$api.pointConvertGoods({order_id:this.orderId,},res2=>{
-							if(res2.code==200){
-								this.$common.redirectTo(
-									'/pages/goods/payment/result?order_id=' + this.orderId,
-								)
-							}else{
-								this.$common.errorToShow(res2.msg);
-								this.$common.redirectTo(
-									'/pages/member/order/orderlist',
-								)
-							}
-						});
-						return;
-					}else if (res.status) {
-							this.orderInfo = res.data;
+				if (res.status) {
+					this.orderInfo = res.data;
+					this.childType = this.orderInfo.point-0 > 0 ? 'pointpay' : '';        //'pointpay',商品订单积分兑换的情况
+				}
+					// if(res.code == -1){
+					// 	this.$api.pointConvertGoods({order_id:this.orderId,},res2=>{
+					// 		if(res2.code==200){
+					// 			this.$common.redirectTo(
+					// 				'/pages/goods/payment/result?order_id=' + this.orderId,
+					// 			)
+					// 		}else{
+					// 			this.$common.errorToShow(res2.msg);
+					// 				'/pages/member/order/orderlist',
+					// 			)
+					// 		}
+					// 	});this.$common.redirectTo(
+								
+					// 	return;
+					// }else if (res.status) {
+					// 		this.orderInfo = res.data;
 							
-					}else{
-						this.$common.errorToShow(res2.msg);
-					}
+					// }else{
+					// 	this.$common.errorToShow(res2.msg);
+					// }
 			});
 		},
 		// 获取用户信息

@@ -64,6 +64,13 @@
 				default () {
 					return 1
 				}
+			},
+			//订单子类型   --积分兑换商品
+			childType: {
+				type: String,
+				default () {
+					return ''
+				}
 			}
 		},
 		data() {
@@ -87,11 +94,18 @@
 			},
 			// 支付方式处理
 			formatPayments(payments) {
+				
 				// 如果是充值订单 过滤余额支付 过滤非线上支付方式
 				if (this.type === 2) {
 					payments = payments.filter(item => item.code !== 'balancepay' || item.is_online === 1)
 				}
-
+				//如果是积分兑换的商品订单，只能积分兑换
+				if(this.childType === 'pointpay') {
+					payments = payments.filter(item => item.code === 'pointpay')
+				}else{
+					payments = payments.filter(item => item.code !== 'pointpay')
+				}
+				
 				// 设置logo图片
 				payments.forEach(item => {
 					this.$set(item, 'icon', '/static/image/' + item.code + '.png')
@@ -207,6 +221,21 @@
 						 * 线下支付
 						 */
 						_this.$common.modelShow('线下支付说明', '请联系客服进行线下支付', () => {}, false, '取消', '确定')
+						break
+					case 'pointpay':
+						/**
+						 *  积分支付
+						 *
+						 */
+						this.$api.pointConvertGoods({order_id:this.orderId}, res => {
+							if (res.status) {
+								this.$common.redirectTo(
+									'/pages/goods/payment/result?id=' + res.data.payment_id
+								)
+							} else {
+								this.$common.errorToShow(res.msg)
+							}
+						})
 						break
 				}
 			},

@@ -32,7 +32,7 @@
 				>
 					<view class='cell-item-bd'>
 						<view class="cell-bd-view black-text">
-							<text class="cell-bd-text">{{ item.remarks }}</text>
+							<text class="cell-bd-text">{{ item.type }}</text>
 						</view>
 						<view class="cell-bd-view">
 							<text class="cell-bd-text">{{ item.ctime }}</text>
@@ -56,8 +56,9 @@ import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue'
 export default {
 	data () {
 		return {
+			pointType: {},
 			page: 1,
-			limit: 10,
+			limit: 20,
 			pointList: [], // 积分记录
 			total_point:0,
 			loadStatus: 'more'
@@ -65,6 +66,14 @@ export default {
 	},
 	components: { uniLoadMore },
 	onLoad () {
+		this.$api.getMyPoint({},res => {
+			if (res.code==200) {
+					this.total_point=res.data.point;
+			} else {
+				// 接口請求出錯
+				this.$common.errorToShow(res.msg)
+			}
+		})
 		this.userPointLog()
 	},
 	computed: {
@@ -83,17 +92,7 @@ export default {
 				page: _this.page,
 				limit: _this.limit
 			}
-			
 			_this.loadStatus = 'loading'
-			_this.$api.getMyPoint(data, function (res) {
-				if (res.code==200) {
-						_this.total_point=res.data.point;
-				} else {
-					// 接口請求出錯
-					_this.$common.errorToShow(res.msg)
-					_this.loadStatus = 'more'
-				}
-			});
  			_this.$api.pointLog(data, function (res) {
 				if (res.status) {
 					_this.pointList = [..._this.pointList, ...res.data]
@@ -157,6 +156,7 @@ export default {
 .cell-bd-view{
 	font-size: 22upx;
 	color: #999;
+	padding-right: 20upx;
 }
 .cell-item .black-text .cell-bd-text{
 	font-size: 28upx;

@@ -211,6 +211,7 @@ export default {
 	},
 	//加载执行
 	onLoad: function(options) {
+		this.goodsType = options.goodsType || ''
 		var where = {};
 		if (options.id) {
 			where = {
@@ -383,8 +384,10 @@ export default {
 				_this.$common.errorToShow('暂时没有数据了');
 				return false;
 			}
-
-			_this.$api.goodsList(_this.conditions(), function(res) {
+			let conditions = _this.conditions()
+			if(this.goodsType === 'pointGoods') Object.assign(conditions,{goodsType:this.goodsType})
+			
+			_this.$api.goodsList(conditions, function(res) {
 				if (res.status) {
 					//判是否没有数据了，只要返回的记录条数小于总记录条数，那就说明到底了，因为后面没有数据了
 					var isEnd = false;
