@@ -99,6 +99,7 @@
 	$numbox-input-width:44upx;
 	$numbox-height:52upx;
 	$uni-font-size-xxl:32upx;
+	$uni-font-size-xxxl:44upx;
 
 	.uni-numbox {
 		display: inline-flex;
@@ -106,7 +107,7 @@
 		justify-content: flex-start;
 		height: $numbox-height;
 		position: relative;
-
+		margin-left: 30upx;
 		&:after {
 			content: '';
 			position: absolute;
@@ -127,7 +128,7 @@
 			margin: 0;
 			// background-color: $uni-bg-color-grey;
 			width: $numbox-btn-width;
-			font-size: $uni-font-size-xxl;
+			font-size: $uni-font-size-xxxl;
 			height: 100%;
 			line-height: $numbox-height;
 			text-align: center;
@@ -142,7 +143,7 @@
 			height: 100%;
 			text-align: center;
 			min-height: 40upx;
-			font-size: 26upx;
+			// font-size: 26upx;
 			&:after {
 				content: '';
 				position: absolute;

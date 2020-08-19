@@ -1046,7 +1046,7 @@ export default {
 }
 
 .pop-m {
-	font-size: 28upx;
+	font-size: 32upx;
 	margin-bottom: 90upx;
 }
 
