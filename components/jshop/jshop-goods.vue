@@ -114,7 +114,7 @@
 		<view class='img-grids bottom-cell-group' 
 		v-if="jdata.params.column == '2' && jdata.params.display == 'slide' || jdata.params.column == '3' && jdata.params.display == 'slide'"
 		v-bind:class="'slide'+jdata.params.column">
-			<view class='cell-item right-img' v-if="jdata.params.title != ''">
+			<view class='cell-item right-img fsz36 font-blod' v-if="jdata.params.title != ''">
 				<view class='cell-item-hd'>
 					<view class='cell-hd-title'>{{jdata.params.title}}</view>
 				</view>
@@ -225,8 +225,10 @@ export default {
 	border: none;
 	/* padding-bottom: 0; */
 }
+.fsz36 .cell-item-hd, .fsz36 .cell-ft-text {
+	font-size: inherit;
+}
 .cell-ft-text {
-	/* font-size: 22upx; */
 	color: #999;
 }
 .img-grids,.img-list{
