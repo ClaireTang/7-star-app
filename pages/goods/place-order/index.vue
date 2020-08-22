@@ -101,14 +101,14 @@
 			</view>
 
 			<view class='cell-group'>
-				<view class='cell-item'>
+				<!-- <view class='cell-item'>
 					<view class='cell-item-hd'>
 						<view class='cell-hd-title'>优惠券</view>
 					</view>
 					<view class='cell-item-ft'>
 						<text class="cell-ft-p" @click="toshow()">{{ usedCouponsCompute || ''}}</text>
 					</view>
-				</view>
+				</view> -->
 
 				<!-- 商户开启积分 并且用户有积分情况下 -->
 				<view class='cell-item add-title-item right-img' v-if="isOpenPoint === 1 && userPointNums > 0">
@@ -157,8 +157,8 @@
 						<view class="cell-ft-view">{{ cartData.cost_freight || ''}}</view>
 					</view>
 				</view>
-				<view class='cell-item red-price fz12'>
-					如果订单总价不够免配起点（35元），则不配送，请勿下单！
+				<view class='cell-item red-price fz12' v-if="cartData.free_postage===2">
+					如果单日所有订单总价不够免配起点（{{cartData.goodsmoney}}元），则不配送，请联系商家自提！
 				</view>
 				
 			</view>

@@ -139,6 +139,7 @@
 						} else {
 							//登陆成功，设置token，并返回上一页
 							_this.$db.set('userToken', res.data.token)
+							_this.$db.set('getPageConfig',"1")
 							uni.navigateBack({
 								delta: 1
 							})
@@ -194,6 +195,7 @@
 							this.$common.redirectTo('/pages/login/login/index?user_wx_id=' + res.data.user_wx_id);
 						} else {
 							this.$db.set('userToken', res.data.token)
+							this.$db.set('getPageConfig',"1")
 							uni.navigateBack({
 								delta: 1
 							});
@@ -254,6 +256,7 @@
 							this.$common.redirectTo('/pages/login/login/index?user_wx_id=' + res.data.user_id);
 						} else {
 							this.$db.set('userToken', res.data.token)
+							this.$db.set('getPageConfig',"1")
 							uni.navigateBack({
 								delta: 1
 							});

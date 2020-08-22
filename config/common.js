@@ -123,7 +123,7 @@ function successToShow(msg = '保存成功', callback = function() {}) {
 		uni.showToast({
 			title: msg,
 			icon: 'success',
-			duration: 1000,
+			duration: 3000,
 			success() {
 				setTimeout(function() {
 					callback()

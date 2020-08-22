@@ -138,8 +138,10 @@
 						<view class="img-grids-item-b">
 							<view class="goods-name grids-goods-name">{{ item.name }}</view>
 							<view class="goods-item-c">
-								<view class="goods-price red-price">￥{{ item.price }}</view>
-								<image class="goods-cart" src="/static/image/ic-car.png"></image>
+								<newOldPrice :vipPrice="item.index_vip_price" :sellPrice="item.index_selling_price"></newOldPrice>
+								<!-- <view class="goods-price red-price">￥{{ item.index_vip_price }}</view>
+								<view class="goods-price color-9 fsz28"  v-if="$db.get('userToken')">原价:￥{{ item.index_selling_price }}</view> -->
+								<!-- <image class="goods-cart" src="/static/image/ic-car.png"></image> -->
 							</view>
 						</view>
 					</view>
@@ -174,6 +176,7 @@
 
 <script>
 import lvvPopup from '@/components/lvv-popup/lvv-popup.vue';
+import newOldPrice from '@/components/new-old-price.vue';
 export default {
 	data() {
 		return {
@@ -258,7 +261,7 @@ export default {
 		this.getGoods();
 	},
 
-	components: { lvvPopup },
+	components: { lvvPopup, newOldPrice },
 	methods: {
 		listGrid() {
 			if (this.current == 0) {
@@ -386,7 +389,8 @@ export default {
 			}
 			let conditions = _this.conditions()
 			if(this.goodsType === 'pointGoods') Object.assign(conditions,{goodsType:this.goodsType})
-			
+			conditions.token = this.$db.get('userToken') || ''
+			console.log(conditions)
 			_this.$api.goodsList(conditions, function(res) {
 				if (res.status) {
 					//判是否没有数据了，只要返回的记录条数小于总记录条数，那就说明到底了，因为后面没有数据了

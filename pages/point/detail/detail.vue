@@ -136,7 +136,7 @@
 					</view>
 					<scroll-view class="pop-m" scroll-y="true" style="max-height: 560upx;">
 						<spec :spesData="defaultSpesDesc" ref="spec" @changeSpes="changeSpes"></spec>
-						<view class="goods-number">
+						<view class="goods-number flex">
 							<text class="pop-m-title">数量</text>
 							<view class="pop-m-bd-in">
 								<!-- <uni-number-box :min="minNums" :max="product.stock" :value="buyNum" @change="bindChange"></uni-number-box> -->

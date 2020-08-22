@@ -4,14 +4,13 @@
 		<view class='img-grids bottom-cell-group' 
 		v-if="jdata.params.column == '2' && jdata.params.display == 'list' || jdata.params.column == '3' && jdata.params.display == 'list'"
 		v-bind:class="'column'+jdata.params.column">
-			<view class='cell-item right-img' v-if="jdata.params.title != ''">
+			<view class='cell-item right-img fsz36 font-blod' v-if="jdata.params.title != ''">
 				<view class='cell-item-hd'>
 					<view class='cell-hd-title'>{{jdata.params.title}}</view>
 				</view>
 				<view class='cell-item-bd'>
 				</view>
 				<view class='cell-item-ft' v-if="jdata.params.lookMore == 'true'">
-					
 					<text class='cell-ft-text' @click="goodsList({cat_id: jdata.params.classifyId,brand_id:jdata.params.brandId})">查看更多</text>
 					<image class='cell-ft-next icon' src='/static/image/right.png'></image>
 				</view>
@@ -29,7 +28,9 @@
 								{{item.name}}
 							</view>
 							<view class="goods-item-c">
-								<view class="goods-price red-price">￥{{item.price}}</view>
+								<newOldPrice :vipPrice="item.index_vip_price" :sellPrice="item.index_selling_price"></newOldPrice>
+								<!-- <view class="goods-price red-price">￥{{item.index_vip_price}}</view>
+								<view class="goods-price color-9" v-if="$db.get('userToken')">原价:￥{{item.index_selling_price}}</view> -->
 							</view>
 						</view>
 					</view>
@@ -73,7 +74,7 @@
 		<!-- 列表平铺单列 -->
 		<view class="img-list bottom-cell-group" 
 		v-if="jdata.params.column == '1' && jdata.params.display == 'list'" >
-			<view class='cell-item right-img' v-if="jdata.params.title != ''">
+			<view class='cell-item right-img fsz36 font-blod' v-if="jdata.params.title != ''">
 				<view class='cell-item-hd'>
 					<view class='cell-hd-title'>{{jdata.params.title}}</view>
 				</view>
@@ -93,7 +94,8 @@
 							{{item.name}}
 						</view>
 						<view class="goods-item-c">
-							<view class="goods-price red-price">￥{{item.price}}</view>
+							<!-- <view class="goods-price red-price">￥{{item.price}}</view> -->
+							<newOldPrice :vipPrice="item.index_vip_price" :sellPrice="item.index_selling_price"></newOldPrice>
 							<view class="goods-buy">
 								<view class="goods-salesvolume" v-if="item.comments_count > 0">{{item.comments_count}}条评论</view>
 								<view class="goods-salesvolume" v-else-if="item.comments_count <= 0">暂无评论</view>
@@ -133,7 +135,8 @@
 								{{ item.name|substr }}
 							</view>
 							<view class='goods-item-c'>
-								<view class='goods-price red-price'>￥{{ item.price }}</view>
+								<!-- <view class='goods-price red-price'>￥{{ item.price }}</view> -->
+								<newOldPrice :vipPrice="item.index_vip_price" :sellPrice="item.index_selling_price"></newOldPrice>
 							</view>
 						</view>
 					</view>
@@ -179,7 +182,9 @@
 
 <script>
 import {goods} from '@/config/mixins.js'
+import newOldPrice from '@/components/new-old-price.vue';
 export default {
+	components:{ newOldPrice },
 	filters:{
 		substr(val) {
 			if (val.length == 0 || val == undefined) {
@@ -221,7 +226,7 @@ export default {
 	/* padding-bottom: 0; */
 }
 .cell-ft-text {
-	font-size: 22upx;
+	/* font-size: 22upx; */
 	color: #999;
 }
 .img-grids,.img-list{

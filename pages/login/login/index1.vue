@@ -195,6 +195,7 @@ export default {
 			this.$api.login(data, res => {
 				if (res.status) {
 					this.$db.set('userToken', res.data);
+					this.$db.set('getPageConfig',"1")
 					this.redirectHandler();
 				} else {
 					this.$common.errorToShow(res.msg, () => {
@@ -287,6 +288,7 @@ export default {
 										} else {
 											//登陆成功，设置token，并返回上一页
 											_this.$db.set('userToken', res.data.token);
+											_this.$db.set('getPageConfig',"1")
 											uni.navigateBack({
 												delta: 1
 											});

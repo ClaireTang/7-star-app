@@ -24,8 +24,9 @@
 			<view class='cell-group'>
 				<view class='cell-item goods-top'>
 					<view class='cell-item-hd'>
-						<view class='cell-hd-title goods-price red-price'>￥{{ product.price || '0.00' }}</view>
-						<view class='cell-hd-title goods-price color-9 fsz28'>原价:￥{{ product.sale_price || '0.00'}}</view>
+						<newOldPrice :vipPrice="product.price" :sellPrice="product.sale_price"></newOldPrice>
+						<!-- <view class='cell-hd-title goods-price red-price'>￥{{ product.price || '0.00' }}</view>
+						<view class='cell-hd-title goods-price color-9 fsz28'  v-if="$db.get('userToken')">原价:￥{{ product.sale_price || '0.00'}}</view> -->
 						<!-- <view class='cell-hd-title goods-price mktprice-price' v-if="parseFloat(product.mktprice)>0">市场价:￥{{ product.mktprice  || '0.00'}}</view> -->
 					</view>
 					<view class='cell-item-ft'>
@@ -219,7 +220,7 @@
 							<view class='pop-goods-name'>{{ product.name || ''}}</view>
 							<view class="flex">
 								<view class='pop-goods-price red-price'>￥ {{ product.price || ''}}</view>
-								<view class='pop-goods-price color-9 fsz24'>原价:￥{{ product.sale_price || ''}}</view>
+								<view class='pop-goods-price color-9 fsz24' v-if="$db.get('userToken')">原价:￥{{ product.sale_price || ''}}</view>
 							</view>
 						</view>
 						<view class='close-btn' @click="toclose()">
@@ -228,7 +229,7 @@
 					</view>
 					<scroll-view class="pop-m" scroll-y="true" style="max-height: 560upx;">
 						<spec :spesData="defaultSpesDesc" ref="spec" @changeSpes="changeSpes"></spec>
-						<view class="goods-number">
+						<view class="goods-number flex">
 							<text class="pop-m-title">数量</text>
 							<view class="pop-m-bd-in">
 								<!-- <uni-number-box :min="minNums" :max="product.stock" :value="buyNum" @change="bindChange"></uni-number-box> -->
@@ -306,6 +307,7 @@
 	import uniRate from "@/components/uni-rate/uni-rate.vue";
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 	import uniFab from '@/components/uni-fab/uni-fab.vue';
+	import newOldPrice from '@/components/new-old-price.vue';
 	import {
 		get
 	} from '@/config/db.js';
@@ -340,6 +342,7 @@
 			uniFab,
 			spec,
 			jshopContent,
+			newOldPrice,
 			// #ifdef H5
 			shareByH5,
 			// #endif
@@ -550,7 +553,6 @@
 					if (res.status == true) {
 						let info = res.data;
 						let products = res.data.product;
-
 						//var htmlString = info.intro; //replace(/\\/g, "").replace(/<img/g, "<img style=\"display:none;\"")
 						//info.intro = htmlParser(htmlString);
 						this.goodsInfo = info;

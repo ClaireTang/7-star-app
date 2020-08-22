@@ -194,7 +194,8 @@ export default {
 					}
 					_this.$api.smsLogin(data, res => {
 						if (res.status) {
-							this.$db.set('userToken', res.data);
+							_this.$db.set('userToken', res.data);
+							_this.$db.set('getPageConfig',"1")
 							_this.redirectHandler();
 						} else {
 							_this.$common.errorToShow(res.msg);
@@ -270,6 +271,7 @@ export default {
 			_this.$api.smsLogin(data, function(res) {
 				if (res.status) {
 					_this.$db.set('userToken', res.data);
+					_this.$db.set('getPageConfig',"1")
 					_this.redirectHandler();
 				} else {
 					//报错了
@@ -305,6 +307,7 @@ export default {
 			this.$api.smsLogin(data, res => {
 				if (res.status) {
 					this.$db.set('userToken', res.data);
+					this.$db.set('getPageConfig',"1")
 					this.redirectHandler();
 				} else {
 					this.$common.errorToShow(res.msg);

@@ -339,12 +339,12 @@
 						router: '../distribution/user',
 						unshowItem: false
 					},
-					coupon: {
-						name: '我的优惠券',
-						icon: '/static/image/ic-me-coupon.png',
-						router: '../coupon/index',
-						unshowItem: false
-					},
+					// coupon: {
+					// 	name: '我的优惠券',
+					// 	icon: '/static/image/ic-me-coupon.png',
+					// 	router: '../coupon/index',
+					// 	unshowItem: false
+					// },
 					balance: {
 						name: '我的余额',
 						icon: '/static/image/ic-me-balance.png',
@@ -516,6 +516,7 @@
 							this.$common.redirectTo('/pages/login/login/index?user_wx_id=' + res.data.user_wx_id);
 						} else {
 							this.$db.set('userToken', res.data.token)
+							this.$db.set('getPageConfig',"1")
 							this.initData()
 						}
 					} else {
@@ -534,6 +535,7 @@
 							})
 						} else {
 							_this.$db.set('userToken', res.data.token)
+							_this.$db.set('getPageConfig',"1")
 							_this.initData()
 						}
 					} else {

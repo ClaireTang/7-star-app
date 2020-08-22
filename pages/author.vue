@@ -62,6 +62,7 @@ export default {
 				if (res.status) {
 					if (res.data.token) {
 						this.$db.set('userToken', res.data.token);
+						this.$db.set('getPageConfig',"1")
 						this.redirectHandler();
 					} else if (res.data.user_wx_id) {
 						uni.redirectTo({

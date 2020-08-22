@@ -161,6 +161,7 @@ export default {
 				this.$api.smsLogin(data, res => {
 					if (res.status) {
 						this.$db.set('userToken', res.data);
+						this.$db.set('getPageConfig',"1")
 						this.$common.successToShow('注册成功', () => {
 							// 清除随机uid 和 邀请码
 							this.$db.del('uuid');

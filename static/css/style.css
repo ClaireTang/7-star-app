@@ -150,7 +150,9 @@ uni-toast .uni-toast {
 .fsz50 {
 	font-size: 50upx !important;
 }
-
+.font-blod {
+	font-weight: 800;
+}
 .search {
 	width: 100%;
 	height: 104upx;

@@ -3,13 +3,15 @@
 		<view class="result succsee" v-if="status && paymentInfo.status === 2">
 			<image class="result-img" src="/static/image/win.png" mode=""></image>
 			<view class="result-top">支付成功</view>
-			<view class="result-mid red-price">{{ paymentInfo.money || '' }}</view>
+			<view class="result-mid red-price" v-if="paymentInfo.point">{{ paymentInfo.point || 0 }}积分</view>
+			<view class="result-mid red-price" v-else>{{ paymentInfo.money || '' }}</view>
 			<view class="result-bot"><button class="btn btn-g" @click="orderDetail()">查看详情</button></view>
 		</view>
 		<view class="result fail" v-else-if="status && paymentInfo.status === 1">
 			<image class="result-img" src="/static/image/pastdue.png" mode=""></image>
 			<view class="result-top">支付失败</view>
-			<view class="result-mid red-price">{{ paymentInfo.money || '' }}</view>
+			<view class="result-mid red-price" v-if="paymentInfo.point">{{ paymentInfo.point || 0 }}积分</view>
+			<view class="result-mid red-price" v-else>{{ paymentInfo.money || '' }}</view>
 			<view class="result-bot"><button class="btn btn-g" @click="orderDetail()">查看详情</button></view>
 		</view>
 	</view>

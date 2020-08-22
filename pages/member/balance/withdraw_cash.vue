@@ -54,6 +54,11 @@
 						<view class='cell-hd-title' style="color: #f00;" v-show="isError">提现金额超过可用余额</view>
 					</view>
 				</view>
+				<view class='cell-item'>
+					<view class='cell-item-bd red-price'>
+						<text>申请提交成功后，请耐心等待2-5个工作日到账</text>
+					</view>
+				</view>
 			</view>
 			
 		</view>

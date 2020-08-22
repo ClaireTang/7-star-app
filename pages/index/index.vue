@@ -2,7 +2,7 @@
 	<view class="content" style="padding-top: 0upx;">
 
         <!-- #ifdef MP-WEIXIN -->
-        <view class="subscription-notice" v-if="suTip">
+        <!-- <view class="subscription-notice" v-if="suTip">
             <view>
                 <image class="icon" src="/static/image/subscription-tip.png" mode=""></image>
                 <text>订阅消息，及时获取订单最新动态</text>
@@ -11,13 +11,16 @@
                 <text class="subscription-notice-btn red-price" @click="toSubscription()">消息订阅</text>
                 <text class="subscription-notice-btn-close" @click="toClose()">×</text>
             </view>
-        </view>
+        </view> -->
         <!-- #endif -->
 
 		<jshop :jdata="pageData"></jshop>
+		
 		<jihaiCopyright v-if="copy"></jihaiCopyright>
 		<!-- #ifdef H5 || APP-PLUS-NVUE || APP-PLUS -->
-		<view class="service" @click="showChat()"><image class="icon" src="/static/image/seller-content.png" mode=""></image></view>
+		<!-- <view class="service" @click="showChat()">
+			<image class="icon" src="/static/image/seller-content.png" mode=""></image>
+		</view> -->
 		<!-- #endif -->
 		<!-- #ifdef MP-WEIXIN -->
 		<button class="service" hover-class="none" open-type="contact" bindcontact="showChat" :session-from="kefupara">
@@ -90,6 +93,9 @@ export default {
 		// #ifdef MP-WEIXIN
 		this.userIsSubscription();
 		// #endif
+		if(this.$db.get('userToken') && this.$db.get('getPageConfig') === "1") {
+			this.initData()
+		}
 	},
 	methods: {
 		//领取红包
@@ -107,7 +113,8 @@ export default {
 			//获取首页配置
 			this.$api.getPageConfig(
 				{
-					code: this.pageCode
+					code: this.pageCode,
+					token: this.$db.get('userToken') || ''
 				},
 				res => {
 					if (res.status == true) {
@@ -116,6 +123,9 @@ export default {
 						setTimeout(() => {
 							this.showLoad = false;
 						}, 600);
+					}
+					if(this.$db.get('getPageConfig') === "1") {
+						this.$db.set("getPageConfig", 2)
 					}
 				}
 			);
