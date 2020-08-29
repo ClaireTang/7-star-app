@@ -2,8 +2,8 @@
     "name" : "七星优购",
     "appid" : "__UNI__A910DD4",
     "description" : "网上综合商城",
-    "versionName" : "1.1.9",
-    "versionCode" : 119,
+    "versionName" : "1.2.0",
+    "versionCode" : 120,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {

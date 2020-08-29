@@ -8,8 +8,8 @@
 					<view class="sign-everyday x-bc pad">
 						<text class="sign-everyday-title">每日签到</text>
 						<view class="sign-num-box">
-							已连续签到
-							<text class="sign-num">{{ cuntinueDays }}</text>
+							本月共签到
+							<text class="sign-num">{{ totalSignDays }}</text>
 							天
 						</view>
 					</view>
@@ -73,7 +73,7 @@
 						<image class="sign-tag" src="http://shopro.7wpp.com/imgs/modal/sign_modal_succeed.png" mode=""></image>
 						<view class="sign-num-box">
 							已连续打卡
-							<text class="sign-num">{{ cuntinueDays }}</text>
+							<text class="sign-num">{{ continueDays }}</text>
 							天
 						</view>
 					</view>
@@ -101,7 +101,8 @@ export default {
 	data() {
 		return {
 			days: [],
-			cuntinueDays: 0,
+			totalSignDays: 0,
+			continueDays: 0,
 			score: '',
 			cur_year: 0, //当前选的年
 			cur_month: 0, //当前选的月
@@ -138,7 +139,7 @@ export default {
 				console.log(res.data,'res')
 				if (res.code == 200) {
 					let emptyDays = that.calculateEmptyGrids();
-					that.cuntinueDays = that.cuntinueDays === 0 ? res.data.month_total : that.cuntinueDays;
+					that.totalSignDays =  res.data.month_total;
 					that.days = [...emptyDays, ...res.data.days];
 					that.selSign();
 				}
@@ -183,10 +184,9 @@ export default {
 			},res => {
 				if (res.code == 200) {
 					that.showSign = true;
-					that.getSignList();
 					that.score = res.data.score;
-					that.cuntinueDays = res.data.month_total;
-					that.showSign = true;
+					that.continueDays = res.data.sign_row;
+					that.getSignList();
 				}else{
 					that.$common.errorToShow(res.msg);
 				}
