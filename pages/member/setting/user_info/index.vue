@@ -91,6 +91,14 @@
 						</view>
 					</view>
 				</view>
+				<view class='cell-item cell-item-mid'>
+					<view class='cell-item-hd'>
+						<view class='cell-hd-title'>运营码</view>
+					</view>
+					<view class='cell-item-bd'>
+						<input class='cell-bd-input' placeholder='由运营人员提供' v-model="op_code" :disabled="isAble"></input>
+					</view>
+				</view>
 			</view>
 		</view>
 		<view class="button-bottom">
@@ -118,6 +126,8 @@ export default {
 			submitStatus: false,
 			images:[],
 			image_max: 1,
+			op_code: '',
+			isAble: false
         }
     },
     computed: {
@@ -225,11 +235,11 @@ export default {
 			let sex = this.sex +1;
 			let type = this.type +1;
 			
-			if(this.birthday == '请选择'){
-				this.$common.errorToShow('请选择出生日期');
-				this.submitStatus = false;
-				return false;
-			}
+			// if(this.birthday == '请选择'){
+			// 	this.$common.errorToShow('请选择出生日期');
+			// 	this.submitStatus = false;
+			// 	return false;
+			// }
 			if(this.type === 1 && this.images.length === 0) {
 				this.$common.errorToShow('请上传营业执照');
 				this.submitStatus = false;
@@ -243,9 +253,10 @@ export default {
 			this.$api.editInfo({
 					sex: sex,
 					type: type,
-					birthday: this.birthday,
+					birthday: this.birthday == '请选择' ? '' : this.birthday,
 					nickname: this.nickname,
-					business_license: this.type === 1 ? this.images[0].image_id : ''
+					business_license: this.type === 1 ? this.images[0].image_id : '',
+					op_code: this.op_code
 				}, res => {
 					this.$common.successToShow(res.msg, result => {
 						// this.submitStatus = false;
@@ -287,6 +298,8 @@ export default {
 				if(_this.type === 1) {
 					_this.images.push(res.data.business_license)
 				}
+				_this.op_code = res.data.op_code
+				_this.isAble = res.data.op_code - 0 > 0 ? true : false
 			} else {
 				//报错了
 				_this.$common.errorToShow(res.msg);

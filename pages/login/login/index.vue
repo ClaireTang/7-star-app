@@ -24,7 +24,7 @@
 			</view>
 
 			<view v-else>
-				<button :class="regButtonClass" @click="login()" hover-class="btn-hover">登录ggg</button>
+				<button :class="regButtonClass" @click="login()" hover-class="btn-hover">登录</button>
 				<view class="color-9 fsz24 agreement">
 					登录即代表你同意
 					<text @click="goAgreement()" class="color-o">用户协议</text>
