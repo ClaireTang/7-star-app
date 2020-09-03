@@ -15,7 +15,7 @@
 						<view class='cell-hd-title'>手机号</view>
 					</view>
 					<view class='cell-item-bd'>
-						<input class='cell-bd-input' placeholder='' disabled="" v-model="mobile" ></input>
+						<input class='cell-bd-input input-full' placeholder='' disabled="" v-model="mobile" ></input>
 					</view>
 				</view>
 				<view class='cell-item cell-item-mid'>
@@ -23,7 +23,7 @@
 						<view class='cell-hd-title'>昵称</view>
 					</view>
 					<view class='cell-item-bd'>
-						<input class='cell-bd-input' placeholder='' v-model="nickname" ></input>
+						<input class='cell-bd-input input-full' placeholder='' v-model="nickname" ></input>
 					</view>
 				</view>
 				
@@ -96,7 +96,7 @@
 						<view class='cell-hd-title'>运营码</view>
 					</view>
 					<view class='cell-item-bd'>
-						<input class='cell-bd-input' placeholder='由运营人员提供,无提供也可为空' v-model="op_code" :disabled="isAble"></input>
+						<input class='cell-bd-input input-full' placeholder='由运营人员提供,无提供也可为空' v-model="op_code" :disabled="isAble"></input>
 					</view>
 				</view>
 			</view>
@@ -370,5 +370,8 @@ export default {
 	right: 0;
 	top: 0;
 	z-index: 999;
+}
+.input-full {
+	width: 100%;
 }
 </style>
