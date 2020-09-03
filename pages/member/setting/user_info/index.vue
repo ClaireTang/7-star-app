@@ -96,7 +96,7 @@
 						<view class='cell-hd-title'>运营码</view>
 					</view>
 					<view class='cell-item-bd'>
-						<input class='cell-bd-input' placeholder='由运营人员提供' v-model="op_code" :disabled="isAble"></input>
+						<input class='cell-bd-input' placeholder='由运营人员提供,无提供也可为空' v-model="op_code" :disabled="isAble"></input>
 					</view>
 				</view>
 			</view>
