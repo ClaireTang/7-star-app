@@ -93,7 +93,8 @@ const methodsToken = [
 	'user.userSign',
 	'user.getMyPoint',
 	'goods.pointSearch',
-	'user.pointConvertGoods'
+	'user.pointConvertGoods',
+	'user.smsMessageLogin'
 ];
 
 const post = (method, data, callback,complete) => {
@@ -873,3 +874,7 @@ export const pointBanner = (data, callback) => post('goods.pointBanner', data, c
 export const goodsPoints = (data, callback) => post('goods.pointSearch', data, callback);
 //积分兑换商品
 export const pointConvertGoods = (data, callback) => post('user.pointConvertGoods', data, callback);
+
+
+//注册后短信通知负责人
+export const smsMessageLogin = (data,callback) => post('user.smsMessageLogin', data, callback);

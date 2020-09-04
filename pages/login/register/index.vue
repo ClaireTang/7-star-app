@@ -162,6 +162,8 @@ export default {
 					if (res.status) {
 						this.$db.set('userToken', res.data);
 						this.$db.set('getPageConfig',"1")
+						// 注册成功后调用短信接口通知负责人
+						this.$api.smsMessageLogin({}, messageRes => {})
 						this.$common.successToShow('注册成功', () => {
 							// 清除随机uid 和 邀请码
 							this.$db.del('uuid');

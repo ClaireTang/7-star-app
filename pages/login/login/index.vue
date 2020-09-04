@@ -14,7 +14,7 @@
 		<view class="login-b">
 			<!-- #ifdef H5|APP-PLUS|APP-PLUS-NVUE -->
 			<view v-if="user_wx_id">
-				<button :class="regButtonClass" @click="toBind()" hover-class="btn-hover">登录h5/app</button>
+				<button :class="regButtonClass" @click="toBind()" hover-class="btn-hover">登录</button>
 				<view class="color-9 fsz24 agreement">
 					登录即代表你同意
 					<text @click="goAgreement()" class="color-o">用户协议</text>
@@ -38,7 +38,7 @@
 			</view>
 			<!-- #endif -->
 			<!-- #ifdef MP -->
-			<button :class="regButtonClass" @click="showTopTips()" hover-class="btn-hover">登录wx</button>
+			<button :class="regButtonClass" @click="showTopTips()" hover-class="btn-hover">登录</button>
 			<!-- #endif -->
 		</view>
 	</view>
@@ -196,6 +196,8 @@ export default {
 						if (res.status) {
 							_this.$db.set('userToken', res.data);
 							_this.$db.set('getPageConfig',"1")
+							// 注册成功后调用短信接口通知负责人
+							_this.$api.smsMessageLogin({}, messageRes => {})
 							_this.redirectHandler();
 						} else {
 							_this.$common.errorToShow(res.msg);
@@ -272,6 +274,8 @@ export default {
 				if (res.status) {
 					_this.$db.set('userToken', res.data);
 					_this.$db.set('getPageConfig',"1")
+					// 注册成功后调用短信接口通知负责人
+					_this.$api.smsMessageLogin({}, messageRes => {})
 					_this.redirectHandler();
 				} else {
 					//报错了
@@ -308,6 +312,8 @@ export default {
 				if (res.status) {
 					this.$db.set('userToken', res.data);
 					this.$db.set('getPageConfig',"1")
+					// 注册成功后调用短信接口通知负责人
+					this.$api.smsMessageLogin({}, messageRes => {})
 					this.redirectHandler();
 				} else {
 					this.$common.errorToShow(res.msg);
