@@ -11,42 +11,23 @@
 				"appid": plus.runtime.appid,
 				"version": plus.runtime.version
 			};
-			plus.runtime.getProperty(plus.runtime.appid, function(widgetInfo) {  
-			    uni.request({  
-			        url: server,  
-			        data: req,  
-			        success: (result) => {  
-			            var data = result.data;  
-			            if (data.update && data.wgtUrl) {  
-			                uni.downloadFile({  
-			                    url: data.wgtUrl,  
-			                    success: (downloadResult) => {  
-			                        if (downloadResult.statusCode === 200) {  
-			                            plus.runtime.install(downloadResult.tempFilePath, {  
-			                                force: false  
-			                            }, function() {  
-			                                console.log('install success...');  
-			                                plus.runtime.restart();  
-			                            }, function(e) {  
-			                                console.error('install fail...');  
-			                            });  
-			                        }  
-			                    }  
-			                });  
-			            } else if(data.update && data.pkgUrl) {
-							uni.showModal({ //提醒用户更新
-								title: "更新提示",
-								content: data.note,
-								success: (res2) => {
-									if (res2.confirm) {
-										plus.runtime.openURL(data.pkgUrl);
-									}
+			uni.request({
+				url: server,
+				data: req,
+				success: (res) => {
+					if (res.statusCode == 200 && res.data.status === 1) {
+						uni.showModal({ //提醒用户更新  
+							title: "更新提示",
+							content: res.data.note,
+							success: (res2) => {
+								if (res2.confirm) {·
+									plus.runtime.openURL(res.data.url);
 								}
-							})
-						}
-			        }  
-			    });  
-			});
+							}
+						})
+					}
+				}
+			})
 			// #endif  
 			// 获取店铺配置信息  全局只请求一次
 			this.$api.shopConfig(res => {
