@@ -158,7 +158,7 @@
 					</view>
 				</view>
 				<view class='cell-item red-price fz12' v-if="cartData.free_postage===2">
-					如果单日所有订单总价不够免配起点（{{cartData.goodsmoney}}元），则不配送，请联系商家自提！
+					如果订单总价不够免配起点（{{cartData.goodsmoney}}元），则不配送！
 				</view>
 				
 			</view>
@@ -291,7 +291,7 @@
 				<view class="button-bottom-c-t">共 {{ productNums || ''}} 件商品</view>
 				<view class="button-bottom-c-b">合计<text class="red-price"> {{ cartData.amount || ''}}</text></view>
 			</view>
-			<button class='btn btn-square btn-b' hover-class="btn-hover2" form-type="submit" :disabled='submitStatus' :loading='submitStatus'>立即支付</button>
+			<button class='btn btn-square btn-b' hover-class="btn-hover2" form-type="submit" :disabled='submitStatus || isNOCondition' :loading='submitStatus'>立即支付</button>
 		</view>
 	</form>
 </template>
@@ -350,7 +350,8 @@
                     mobile: ''
                 },
                 team_id: 0, //拼团id
-				submitStatus: false
+				submitStatus: false,
+				isNOCondition: true
             }
         },
         components: {lvvPopup,uniSegmentedControl},
@@ -468,7 +469,10 @@
                                 }
                             })
                         }
-
+						console.log(data)
+						//商品总价是否够配送价，判断是否不满足条件
+						this.isNOCondition = data.amount - 0 < data.goodsmoney ? true : false 
+						 
                         // 所有价格转换
                         data.amount = this.$common.formatMoney(data.amount);
                         data.goods_amount = this.$common.formatMoney(data.goods_amount);
@@ -479,6 +483,7 @@
                         data.order_pmt = this.$common.formatMoney(data.order_pmt);
                         data.point_money = this.$common.formatMoney(data.point_money);
                         data.cost_freight = this.$common.formatMoney(data.cost_freight);
+						
 
                         // 购物车详情
                         this.cartData = data
