@@ -19,7 +19,7 @@
 					</view>
 				</view>
 			</view>
-			<view>
+			<view v-if="user.grade_discounts.length > 0">
 				<uni-section title="充值说明" type="line"></uni-section>
 				<uni-list>
 					<uni-list-item :show-arrow="false" :title="flat(item)" v-for="(item,key) in user.grade_discounts" :key="key"/>
