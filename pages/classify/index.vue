@@ -677,26 +677,7 @@ export default {
 page {
 	background-color: #fff;
 }
-.position_re {
-	position: relative;
-}
-.tag-fix {
-	position: absolute;
-	/* #ifndef MP-WEIXIN */
-	top: 0px;
-	/* #endif */
-	/* #ifdef MP-WEIXIN */
-	top: 14px;
-	/* #endif */
-	right: 0;
-	z-index: 98;
-}
-.uni-tag--mark {
-	border-top-left-radius: 15px;
-	border-bottom-left-radius: 15px;
-	border-top-right-radius: 0;
-	border-bottom-right-radius: 0;
-}
+
 .search {
 	position: fixed;
 	z-index: 997;
@@ -862,5 +843,25 @@ page {
 }
 .radius {
 	border-radius: 12upx;
+}
+.position_re {
+	position: relative;
+}
+.tag-fix {
+	position: absolute;
+	/* #ifndef MP-WEIXIN */
+	top: 0px;
+	/* #endif */
+	/* #ifdef MP-WEIXIN */
+	top: 14px;
+	/* #endif */
+	right: 0;
+	z-index: 98;
+}
+.uni-tag--mark {
+	border-top-left-radius: 15px;
+	border-bottom-left-radius: 15px;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
 }
 </style>

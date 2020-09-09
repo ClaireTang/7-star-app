@@ -10,7 +10,7 @@
 
 		<view class="content-top">
 			<!-- 轮播图 -->
-			<view class='swiper'>
+			<view class='swiper position_re'>
 				<swiper class="swiper-c" :indicator-dots="swiper.indicatorDots" :autoplay="swiper.autoplay" :interval="swiper.interval"
 				 :duration="swiper.duration">
 					<swiper-item class="have-none" v-for="(item, index) in goodsInfo.album" :key="index" @click="clickImg(item)">
@@ -883,23 +883,7 @@
 </script>
 
 <style>
-	.tag-fix {
-		position: absolute;
-		/* #ifndef MP-WEIXIN */
-		top: 12px;
-		/* #endif */
-		/* #ifdef MP-WEIXIN */
-		top: 26px;
-		/* #endif */
-		right: 0;
-		z-index: 98;
-	}
-	.uni-tag--mark {
-		border-top-left-radius: 15px;
-		border-bottom-left-radius: 15px;
-		border-top-right-radius: 0;
-		border-bottom-right-radius: 0;
-	}
+	
 	.swiper {
 		height: 750upx;
 	}
@@ -1348,7 +1332,7 @@
 		width: 100%;
 		height: 44px;
 		/* #ifndef MP-WEIXIN */
-		padding: 12px 12px 0;
+		padding: 30px 12px 0;
 		/* #endif */
 		/* #ifdef MP-WEIXIN */
 		padding: 26px 12px 0;
@@ -1437,5 +1421,21 @@
 	/* #endif */
 	.red-price {
 		margin-right: 10rpx;
+	}
+	
+	.position_re {
+		position: relative;
+	}
+	.tag-fix {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		z-index: 98;
+	}
+	.uni-tag--mark {
+		border-top-left-radius: 15px;
+		border-bottom-left-radius: 15px;
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
 	}
 </style>
