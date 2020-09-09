@@ -255,7 +255,7 @@
 		<view class="goods-bottom">
 			<!-- 客服按钮 -->
 			<!-- #ifdef H5 || APP-PLUS-NVUE || APP-PLUS -->
-			<view class="goods-bottom-ic" @click="showChat()">
+			<view class="goods-bottom-ic" @click="showTel()">
 				<image class="icon" src="/static/image/customerservice.png" mode=""></image>
 				<view>客服</view>
 			</view>
@@ -794,6 +794,12 @@
 				// 预览图片
 				uni.previewImage({
 					urls: imgs.split()
+				});
+			},
+			// 手机号拨号
+			showTel() {
+				uni.makePhoneCall({
+				    phoneNumber: '03962632777' //仅为示例
 				});
 			},
 			//在线客服,只有手机号的，请自己替换为手机号
