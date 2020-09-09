@@ -18,11 +18,17 @@
 			<!-- <view class='img-grids'> -->
 				<view class="" v-if="count">
 					<view class="img-grids-item" v-for="item in jdata.params.list" :key="item.id" @click="goodsDetail(item.id)">
-						<image
-							class="img-grids-item-t have-none"
-							:src="item.image_url"
-							mode='aspectFill'
-						></image>
+						<view class="position_re">
+							<image
+								class="img-grids-item-t have-none"
+								:src="item.image_url"
+								mode='aspectFill'
+							></image>
+							<view class="tag-fix" v-if="item.three_name">
+								<uni-tag :text="item.three_name" type="error" :circle="false" :mark="true"></uni-tag>
+							</view>
+						</view>
+						
 						<view class="img-grids-item-b">
 							<view class="goods-name grids-goods-name">
 								{{item.name}}
@@ -183,8 +189,9 @@
 <script>
 import {goods} from '@/config/mixins.js'
 import newOldPrice from '@/components/new-old-price.vue';
+import uniTag from "@/components/uni-tag/uni-tag.vue";
 export default {
-	components:{ newOldPrice },
+	components:{ newOldPrice,uniTag },
 	filters:{
 		substr(val) {
 			if (val.length == 0 || val == undefined) {
@@ -221,6 +228,26 @@ export default {
 </script>
 
 <style>
+.position_re {
+	position: relative;
+}
+.tag-fix {
+	position: absolute;
+	/* #ifndef MP-WEIXIN */
+	top: 0px;
+	/* #endif */
+	/* #ifdef MP-WEIXIN */
+	top: 14px;
+	/* #endif */
+	right: 0;
+	z-index: 98;
+}
+.uni-tag--mark {
+	border-top-left-radius: 15px;
+	border-bottom-left-radius: 15px;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
 .cell-item {
 	border: none;
 	/* padding-bottom: 0; */

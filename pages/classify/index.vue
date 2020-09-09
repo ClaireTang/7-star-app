@@ -134,7 +134,12 @@
 			<view class="img-grids" v-show="current === 0">
 				<view v-if="goodsList.length > 0">
 					<view class="img-grids-item" v-for="(item, index) in goodsList" :key="index" @click="goodsDetail(item.id)">
-						<image class="img-grids-item-t have-none" :src="item.image_url" mode="aspectFill"></image>
+						<view class="position_re">
+							<image class="img-grids-item-t have-none" :src="item.image_url" mode="aspectFill"></image>
+							<view class="tag-fix" v-if="item.three_name">
+								<uni-tag :text="item.three_name" type="error" :circle="false" :mark="true"></uni-tag>
+							</view>
+						</view>
 						<view class="img-grids-item-b">
 							<view class="goods-name grids-goods-name">{{ item.name }}</view>
 							<view class="goods-item-c">
@@ -177,6 +182,7 @@
 <script>
 import lvvPopup from '@/components/lvv-popup/lvv-popup.vue';
 import newOldPrice from '@/components/new-old-price.vue';
+import uniTag from "@/components/uni-tag/uni-tag.vue";
 export default {
 	data() {
 		return {
@@ -261,7 +267,7 @@ export default {
 		this.getGoods();
 	},
 
-	components: { lvvPopup, newOldPrice },
+	components: { lvvPopup, newOldPrice, uniTag },
 	methods: {
 		listGrid() {
 			if (this.current == 0) {
@@ -670,6 +676,26 @@ export default {
 <style>
 page {
 	background-color: #fff;
+}
+.position_re {
+	position: relative;
+}
+.tag-fix {
+	position: absolute;
+	/* #ifndef MP-WEIXIN */
+	top: 0px;
+	/* #endif */
+	/* #ifdef MP-WEIXIN */
+	top: 14px;
+	/* #endif */
+	right: 0;
+	z-index: 98;
+}
+.uni-tag--mark {
+	border-top-left-radius: 15px;
+	border-bottom-left-radius: 15px;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
 }
 .search {
 	position: fixed;

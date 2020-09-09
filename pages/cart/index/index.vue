@@ -25,6 +25,14 @@
 						<view class="img-list-item">
 							<image class="img-list-item-l little-img have-none" :src="item.products.image_path" mode="aspectFill"></image>
 							<view class="img-list-item-r little-right">
+								<view class="flex flex-end" v-if="item.products.three_name">
+									<view class="">
+										<image class="cell-hd-icon" src="/static/image/homepage.png" style="width: 32upx;height: 32upx;vertical-align: middle;"></image>
+									</view>
+									<view class="">
+										<text>{{item.products.three_name}}</text>
+									</view>
+								</view>
 								<view class="little-right-t">
 									<view class="goods-name list-goods-name" @click="goodsDetail(item.products.goods_id)">{{ item.products.name }}</view>
 									<view class="goods-price red-price">￥{{ item.products.price }}</view>
@@ -55,6 +63,7 @@
 										</view>
 									</view>
 								</view>
+								
 								<text v-if="item.products.purchase">【限购：{{item.products.purchase}}】</text>
 							</view>
 						</view>
@@ -570,6 +579,9 @@ export default {
 };
 </script>
 <style>
+.flex-end {
+	justify-content: flex-end;
+}
 .cell-item-hd {
 	max-width: 40upx;
 	min-width: 40upx;

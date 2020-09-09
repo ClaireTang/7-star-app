@@ -6,10 +6,9 @@
 				<image class="icon" src="/static/image/back-black.png" mode=""></image>
 			</view>
 		</view>
-
+		
 
 		<view class="content-top">
-
 			<!-- 轮播图 -->
 			<view class='swiper'>
 				<swiper class="swiper-c" :indicator-dots="swiper.indicatorDots" :autoplay="swiper.autoplay" :interval="swiper.interval"
@@ -18,6 +17,9 @@
 						<image class='' :src='item' mode="aspectFill"></image>
 					</swiper-item>
 				</swiper>
+				<view class="tag-fix" v-if="goodsInfo.three_name">
+					<uni-tag :text="goodsInfo.three_name" type="error" :circle="false" :mark="true"></uni-tag>
+				</view>
 			</view>
 			<!-- 轮播图end -->
 
@@ -307,6 +309,7 @@
 	import uniRate from "@/components/uni-rate/uni-rate.vue";
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 	import uniFab from '@/components/uni-fab/uni-fab.vue';
+	import uniTag from "@/components/uni-tag/uni-tag.vue";
 	import newOldPrice from '@/components/new-old-price.vue';
 	import {
 		get
@@ -340,6 +343,7 @@
 			uniRate,
 			uniLoadMore,
 			uniFab,
+			uniTag,
 			spec,
 			jshopContent,
 			newOldPrice,
@@ -879,6 +883,23 @@
 </script>
 
 <style>
+	.tag-fix {
+		position: absolute;
+		/* #ifndef MP-WEIXIN */
+		top: 12px;
+		/* #endif */
+		/* #ifdef MP-WEIXIN */
+		top: 26px;
+		/* #endif */
+		right: 0;
+		z-index: 98;
+	}
+	.uni-tag--mark {
+		border-top-left-radius: 15px;
+		border-bottom-left-radius: 15px;
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+	}
 	.swiper {
 		height: 750upx;
 	}
@@ -1322,7 +1343,7 @@
 		padding: 0 6upx;
 		border-radius: 6upx;
 	}
-
+	
 	.nav-back {
 		width: 100%;
 		height: 44px;
