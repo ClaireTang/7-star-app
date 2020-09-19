@@ -144,7 +144,7 @@ function errorToShow(msg = '操作失败', callback = function() {}) {
 		uni.showToast({
 			title: msg,
 			icon: 'none',
-			duration: 1500,
+			duration: 3000,
 			success() {
 				setTimeout(function() {
 					callback()

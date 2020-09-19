@@ -169,7 +169,6 @@
 						</view>
 					</view>
 					<view class='cell-item-ft'>
-						{{orderInfo.order_point}}
 						<text class="cell-ft-p">￥{{ orderInfo.goods_amount || ''}}</text>
 						<!-- <text class="cell-ft-p">￥{{ orderInfo.point_money || ''}}</text> -->
 					</view>

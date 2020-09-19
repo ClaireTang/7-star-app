@@ -94,7 +94,8 @@ const methodsToken = [
 	'user.getMyPoint',
 	'goods.pointSearch',
 	'user.pointConvertGoods',
-	'user.smsMessageLogin'
+	'user.smsMessageLogin',
+	'user.paySuccessData'
 ];
 
 const post = (method, data, callback,complete) => {
@@ -126,7 +127,9 @@ const post = (method, data, callback,complete) => {
 		},
 		method: 'POST',
 		success: (response) => {
-			uni.hideLoading();
+			setTimeout(function() {
+				uni.hideLoading();
+			}, 1000)
 			const result = response.data
 			if (!result.status) {
 				// 登录信息过期或者未登录
@@ -878,3 +881,6 @@ export const pointConvertGoods = (data, callback) => post('user.pointConvertGood
 
 //注册后短信通知负责人
 export const smsMessageLogin = (data,callback) => post('user.smsMessageLogin', data, callback);
+
+//付款成功后回调自动分割多个订单
+export const devideOrder = (data,callback) => post('user.paySuccessData', data, callback);
