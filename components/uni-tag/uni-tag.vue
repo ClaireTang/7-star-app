@@ -5,6 +5,7 @@
       inverted === true || inverted === 'true' ? type + '-uni-tag--inverted' : '',
       circle === true || circle === 'true' ? 'uni-tag--circle' : '',
       mark === true || mark === 'true' ? 'uni-tag--mark' : '',
+	  left === true || left === 'left' ? 'uni-tag--mark left' : '',
       'uni-tag--' + size
     ]"
 	 @click="onClick()" class="uni-tag" v-if="text">
@@ -71,6 +72,11 @@
 				// 是否为标记样式
 				type: [Boolean, String],
 				default: false
+			},
+			left: {
+				// 标记样式是否左侧倒圆角
+				type: [Boolean, String],
+				default: false
 			}
 		},
 		methods: {
@@ -113,6 +119,12 @@
 		border-bottom-left-radius: 0;
 		border-top-right-radius: 15px;
 		border-bottom-right-radius: 15px;
+	}
+	.uni-tag--mark.left {
+		border-top-left-radius: 15px;
+		border-bottom-left-radius: 15px;
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
 	}
 
 	.uni-tag--disabled {

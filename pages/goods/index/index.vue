@@ -18,7 +18,7 @@
 					</swiper-item>
 				</swiper>
 				<view class="tag-fix" v-if="goodsInfo.three_name">
-					<uni-tag :text="goodsInfo.three_name" type="error" :circle="false" :mark="true"></uni-tag>
+					<uni-tag :text="goodsInfo.three_name" type="error" :circle="false" :mark="true" :left="true"></uni-tag>
 				</view>
 			</view>
 			<!-- 轮播图end -->
@@ -1437,11 +1437,5 @@
 		bottom: 0;
 		right: 0;
 		z-index: 98;
-	}
-	.uni-tag--mark {
-		border-top-left-radius: 15px;
-		border-bottom-left-radius: 15px;
-		border-top-right-radius: 0;
-		border-bottom-right-radius: 0;
 	}
 </style>

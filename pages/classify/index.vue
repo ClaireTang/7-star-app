@@ -137,7 +137,7 @@
 						<view class="position_re">
 							<image class="img-grids-item-t have-none" :src="item.image_url" mode="aspectFill"></image>
 							<view class="tag-fix" v-if="item.three_name">
-								<uni-tag :text="item.three_name" type="error" :circle="false" :mark="true"></uni-tag>
+								<uni-tag :text="item.three_name" type="error" :circle="false" :mark="true" :left="true"></uni-tag>
 							</view>
 						</view>
 						<view class="img-grids-item-b">
@@ -857,11 +857,5 @@ page {
 	/* #endif */
 	right: 0;
 	z-index: 98;
-}
-.uni-tag--mark {
-	border-top-left-radius: 15px;
-	border-bottom-left-radius: 15px;
-	border-top-right-radius: 0;
-	border-bottom-right-radius: 0;
 }
 </style>
