@@ -77,12 +77,26 @@ export default {
 					}
 					this.status = true;
 					this.paymentInfo = info;
-					
+					// let isWeiXin = this.$common.isWeiXinBrowser()
+					// if(isWeiXin && info.info.payment_type===2) {
+					// 	this.giveMoney(info)
+					// }
 				} else {
 					this.$common.errorToShow(res.msg);
 				}
 			});
 		},
+		// giveMoney(data) {
+		// 	let post_data = {
+		// 		user_id: data.user_id,
+		// 		money: data.money,
+		// 	}
+		// 	this.$api.giveMoney(post_data, res => {
+		// 		this.$common.successToShow('充值callback')
+		// 	},err => {
+		// 		this.$common.errorToShow(err)
+		// 	})
+		// },
 		orderDetail() {
 			if (this.orderId && this.paymentInfo.type === 1) {
 				this.$common.redirectTo('/pages/member/order/orderdetail?order_id=' + this.orderId);
