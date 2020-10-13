@@ -35,7 +35,7 @@
 						<view class='cell-item-bd'>
 							<!-- <view class="uni-list">
 								<view class="uni-list-cell-db"> -->
-									<picker mode="selector" @change="bindPickerChange" :value="index" :range="objectSex" class="w-100">
+									<picker mode="selector" @change="bindPickerChange" :value="sex" :range="objectSex" class="w-100">
 										<view class="flex space-between w-100">
 											<view class="uni-input">{{objectSex[sex]}}</view>
 											<image class='icon' src='/static/image/ic-pull-down.png'></image>
@@ -68,7 +68,7 @@
 						<view class='cell-hd-title'>类别</view>
 					</view>
 					<view class='cell-item-bd'>
-						<picker mode="selector" @change="bindTypePickerChange" :value="indexType" :range="objectType" class="w-100">
+						<picker mode="selector" @change="bindTypePickerChange" :value="type" :range="objectType" class="w-100">
 							<view class="flex space-between w-100">
 								<view class="uni-input">{{objectType[type]}}</view>
 								<image class='cell-ft-next icon' src='/static/image/ic-pull-down.png'></image>
@@ -76,7 +76,7 @@
 						</picker>
 					</view>
 				</view>
-				<view class='cell-item right-img' v-if="type === 1">
+				<view class='cell-item right-img' v-if="type-0 === 1">
 					<view class='cell-item-hd'>
 						<view class='cell-hd-title'>营业执照</view>
 					</view>
@@ -115,8 +115,6 @@ export default {
 			avatar: '',
 			objectSex: ['男', '女', '未知'],
 			objectType: ['个人','商户','未知'],
-			index: 2,
-			indexType: 2,
 			nickname: '',
 			mobile: '',
 			date: '1990-01-01',
@@ -232,21 +230,16 @@ export default {
 		// 保存资料
 		submitHandler() {
 			this.submitStatus = true;
-			let sex = this.sex +1;
-			let type = this.type +1;
+			let sex = this.sex-0+1;
+			let type = this.type-0+1;
 			
 			// if(this.birthday == '请选择'){
 			// 	this.$common.errorToShow('请选择出生日期');
 			// 	this.submitStatus = false;
 			// 	return false;
 			// }
-			if(this.type === 1 && this.images.length === 0) {
+			if(this.type-0 === 1 && this.images.length === 0) {
 				this.$common.errorToShow('请上传营业执照');
-				this.submitStatus = false;
-				return false;
-			}
-			if(this.type === 2) {
-				this.$common.errorToShow('请选择类别');
 				this.submitStatus = false;
 				return false;
 			}
@@ -286,9 +279,7 @@ export default {
 				_this.nickname = res.data.nickname;
 				_this.mobile = res.data.mobile;
 				_this.sex = the_sex;
-				_this.index = the_sex;
 				_this.type = the_type;
-				_this.indexType = the_type;
 				_this.birthday = res.data.birthday;
 				_this.avatar = res.data.avatar;
 				
@@ -296,7 +287,7 @@ export default {
 					_this.date = _this.birthday;
 				}
 				if(_this.type === 1) {
-					_this.images.push(res.data.business_license)
+					res.data.business_license && _this.images.push(res.data.business_license)
 				}
 				_this.op_code = res.data.op_code
 				_this.isAble = res.data.op_code - 0 > 0 ? true : false
